@@ -10,7 +10,7 @@
 
 #let trim-numbering(s) = s.match(pattern).captures.at(0)
 
-#let my-numbering(the-numbering, heading-numbering: none, heading-nums: none, ..nums, ref: false) = {
+#let my-numbering(the-numbering, heading-numbering: none, heading-nums: none, ref: false, ..nums) = {
   if type(the-numbering) == str {
     if ref {
       numbering(trim-numbering(the-numbering), ..nums)
@@ -18,12 +18,12 @@
       numbering(the-numbering, ..nums)
     }
   } else {
-    the-numbering(heading-numbering: heading-numbering, heading-nums: heading-nums, ..nums, ref: ref)
+    the-numbering(heading-numbering: heading-numbering, heading-nums: heading-nums, ref: ref, ..nums)
   }
 }
 
 #let set-equation-numbering(the-numbering) = {
-  equation-numbering-func.update(old => (heading-numbering: none, heading-nums: none, ..nums, ref: false) => my-numbering(the-numbering, heading-numbering: heading-numbering, heading-nums: heading-nums, ref: false))
+  equation-numbering-func.update(old => (heading-numbering: none, heading-nums: none, ..nums, ref: false) => my-numbering(the-numbering, heading-numbering: heading-numbering, heading-nums: heading-nums, ref: false, ..nums))
 }
 
 #let style-equations = it => {
@@ -38,17 +38,16 @@
     let location = here()
     let heading-numbering = query(selector(heading).before(location)).last(default: (numbering: none)).numbering
     let heading-nums = counter(heading).at(location)
-    equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ..nums, ref: false)
+    equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ref: false, ..nums)
   })
 
   show ref: it => {
-    // TODO supplement
     if it.element == none or it.element.func() != math.equation { return it }
     let location = it.element.location()
     let heading-numbering = query(selector(heading).before(location)).last(default: (numbering: none)).numbering
     let heading-nums = counter(heading).at(location)
     let nums = counter(math.equation).at(location)
-    let rendered = equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ..nums, ref: true)
+    let rendered = equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ref: true, ..nums)
     let result = if it.element.supplement == [] {
       rendered
     } else {
@@ -63,22 +62,22 @@
 
 #show: style-equations
 
-#set-equation-numbering("(A)")
+#set-equation-numbering("fefeefs1sssssw")
 
 $ 1 + 1 $ <test-1>
 
-#set heading(numbering: "(1.1)")
+#set heading(numbering: "1.1")
 
 $ 1 + 1 $ <test0>
 
 #set math.equation(supplement: none)
 
-#set-equation-numbering((heading-numbering: none, heading-nums: none, ..nums, ref: false) => {
-  let subnumbering = numbering("1", ..nums)
+#set-equation-numbering((heading-numbering: none, heading-nums: none, ref: false, ..nums) => {
+  let subnumbering = my-numbering("1", ref: ref, ..nums)
   let result = if heading-numbering == none {
     subnumbering
   } else {
-    my-numbering(heading-numbering, ..heading-nums, ref: ref) + "." + subnumbering
+    my-numbering(heading-numbering, ref: ref, ..heading-nums) + "." + subnumbering
   }
   if ref {
     result
@@ -109,12 +108,12 @@ $ 1 + 1 $ <test4>
 
 #set heading(numbering: "I.1")
 
-#set-equation-numbering((heading-numbering: none, heading-nums: none, ..nums, ref: false) => {
-  let subnumbering = numbering("A", ..nums)
+#set-equation-numbering((heading-numbering: none, heading-nums: none, ref: false, ..nums) => {
+  let subnumbering = my-numbering("A", ref: ref, ..nums)
   let result = if heading-numbering == none {
     subnumbering
   } else {
-    numbering(heading-numbering, ..heading-nums) + "." + subnumbering
+    my-numbering(heading-numbering, ref: ref, ..heading-nums) + "." + subnumbering
   }
   if ref {
     result
