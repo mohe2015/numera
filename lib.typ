@@ -58,11 +58,11 @@
   it
 }
 
-#equation-heading-level.update(0)
+#equation-heading-level.update(1)
 
 #show: style-equations
 
-#set-equation-numbering("s1s")
+#set-equation-numbering("(1)")
 
 $ 1 + 1 $ <test-1>
 
