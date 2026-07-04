@@ -1,5 +1,17 @@
 #import "@preview/equate:0.3.3": equate
 
+// would be great if multiple packages could contribute numbers, if keyed then order would not even matter
+
+#let numbering-contributors = state("numbering-contributors", ())
+
+// producer, the same keyed contributer could in theory change / be replaced
+#let contribute-numbering(location-func) = {
+  numbering-contributors.update(old => {
+    old.push(location-func)
+    old
+  })
+}
+
 #let equation-heading-level = state("equation-heading-level", 0)
 
 #let equation-numbering-func = state("equation-numbering-func", (..) => {
@@ -28,6 +40,12 @@
   equation-numbering-func.update(old => (heading-numbering: none, heading-nums: none, ..nums, ref: false) => my-numbering(the-numbering, heading-numbering: heading-numbering, heading-nums: heading-nums, ref: ref, ..nums))
 }
 
+#contribute-numbering(location => {
+  let heading-numbering = query(selector(heading).before(location)).last(default: (numbering: none)).numbering
+  let heading-nums = counter(heading).at(location)
+  (heading-numbering: heading-numbering, heading-nums: heading-nums)
+})
+
 #let style-equations = it => {
   show heading: outer => {
     if outer.level <= equation-heading-level.get() {
@@ -38,18 +56,26 @@
 
   set math.equation(numbering: (..nums) => {
     let location = here()
-    let heading-numbering = query(selector(heading).before(location)).last(default: (numbering: none)).numbering
-    let heading-nums = counter(heading).at(location)
-    equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ref: false, ..nums)
+    let the-numbering-contributors = numbering-contributors.at(location)
+    let dict = if the-numbering-contributors == none {
+      ()
+    } else {
+      the-numbering-contributors.fold(().to-dict(), (a, b) => a + b(location))
+    }
+    equation-numbering-func.at(location)(..dict, ref: false, ..nums)
   })
 
   show ref: it => {
     if it.element == none or it.element.func() != math.equation { return it }
     let location = it.element.location()
-    let heading-numbering = query(selector(heading).before(location)).last(default: (numbering: none)).numbering
-    let heading-nums = counter(heading).at(location)
+    let the-numbering-contributors = numbering-contributors.at(location)
+    let dict = if the-numbering-contributors == none {
+      ()
+    } else {
+      the-numbering-contributors.fold(().to-dict(), (a, b) => a + b(location))
+    }
     let nums = counter(math.equation).at(location)
-    let rendered = equation-numbering-func.at(location)(heading-numbering: heading-numbering, heading-nums: heading-nums, ref: true, ..nums)
+    let rendered = equation-numbering-func.at(location)(..dict, ref: true, ..nums)
     let result = if it.element.supplement == [] {
       rendered
     } else {
@@ -143,17 +169,3 @@ $ 1 + 1 $ <test7>
 $ 1 + 1 $ <test8>
 
 @test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
-
-#show: equate.with(breakable: true, sub-numbering: true)
-
-The dot product of two vectors $arrow(a)$ and $arrow(b)$ can
-be calculated as shown in @dot-product.
-
-$
-  chevron.l a, b chevron.r &= arrow(a) dot arrow(b) \
-                       &= a_1 b_1 + a_2 b_2 + ... a_n b_n \
-                       &= sum_(i=1)^n a_i b_i. #<sum>
-$ <dot-product>
-
-The sum notation in @sum is a useful way to express the dot
-product @dot-product of two vectors.
