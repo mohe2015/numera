@@ -1,6 +1,6 @@
 #let equation-numbering-func = state("equation-numbering-func", (location, ..nums, ref: false) => {
   let heading-numbering = query(selector(heading).before(location)).last(default: none)
-  let result = if heading-numbering == none {
+  let result = if heading-numbering == none or heading-numbering.numbering == none {
     numbering("1", ..nums)
   } else {
     numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + numbering("1", ..nums)
@@ -17,17 +17,13 @@
   it
 }
 
-#set heading(numbering: "1.1")
-
 #let style-equations = it => {
   set math.equation(numbering: (..nums) => {
-    // wrong style chain
     equation-numbering-func.get()(here(), ..nums, ref: false)
   })
 
   show ref: it => {
     if it.element == none or it.element.func() != math.equation { return it }
-    // here the wrong numbering-func would be selected if you could update it.
     link(it.element.location(), equation-numbering-func.at(it.element.location())(it.element.location(), ..counter(math.equation).at(it.element.location()), ref: true))
   }
   it
@@ -35,32 +31,40 @@
 
 #show: style-equations
 
-#set figure(numbering: "a.a.a") // also gets chapter number
+$ 1 + 1 $ <test-1>
+
+#set heading(numbering: "1.1")
+
+$ 1 + 1 $ <test0>
 
 = Test
 
 $ 1 + 1 $ <test1>
 
+== Subheading
+
 $ 1 + 1 $ <test2>
 
-@test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
-
-#set heading(numbering: "I.1")
+@test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
 
 = Test
 
 $ 1 + 1 $ <test3>
 
+== Subheading
+
 $ 1 + 1 $ <test4>
 
-@test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
+@test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
+
+#set heading(numbering: "I.1")
 
 #equation-numbering-func.update(old => (location, ..nums, ref: false) => {
   let heading-numbering = query(selector(heading).before(location)).last(default: none)
-  let result = if heading-numbering == none {
+  let result = if heading-numbering == none or heading-numbering.numbering == none {
     numbering("A", ..nums)
   } else {
-    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + numbering("A", ..nums)
+    counter(selector(heading).before(location)).display(at: location) + "." + numbering("1", ..nums)
   }
   if ref {
     result
@@ -73,9 +77,11 @@ $ 1 + 1 $ <test4>
 
 $ 1 + 1 $ <test5>
 
+== Subheading
+
 $ 1 + 1 $ <test6>
 
-@test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
+@test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
 
 #set heading(numbering: "I.1")
 
@@ -83,6 +89,8 @@ $ 1 + 1 $ <test6>
 
 $ 1 + 1 $ <test7>
 
+== Subheading
+
 $ 1 + 1 $ <test8>
 
-@test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
+@test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
