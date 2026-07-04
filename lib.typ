@@ -6,7 +6,7 @@
 
 #let counting-symbols = "1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵"
 #let non-counting = "[^" + counting-symbols + "]"
-#let pattern = regex("^" + non-counting + "*(.*)" + non-counting + "*$")
+#let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
 
 #let trim-numbering(s) = {
   let m = s.match(pattern)
