@@ -23,7 +23,7 @@
 }
 
 #let set-equation-numbering(the-numbering) = {
-  equation-numbering-func.update(old => (heading-numbering: none, heading-nums: none, ..nums, ref: false) => my-numbering(the-numbering, heading-numbering: heading-numbering, heading-nums: heading-nums, ref: false, ..nums))
+  equation-numbering-func.update(old => (heading-numbering: none, heading-nums: none, ..nums, ref: false) => my-numbering(the-numbering, heading-numbering: heading-numbering, heading-nums: heading-nums, ref: ref, ..nums))
 }
 
 #let style-equations = it => {
