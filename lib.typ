@@ -1,4 +1,6 @@
-#let equation-numbering-func = state("equation-numbering-func", (location: none, ..nums, ref: false) => "Z")
+#let equation-numbering-func = state("equation-numbering-func", (..abc) => {
+  "SHOULD NEVER BE SHOWN"
+})
 
 // the ref: true/ref: false stuff doesn't work here
 #let set-equation-numbering(the-numbering) = {
@@ -73,7 +75,7 @@ $ 1 + 1 $ <test4>
   let result = if heading-numbering == none or heading-numbering.numbering == none {
     numbering("A", ..nums)
   } else {
-    counter(selector(heading).before(location)).display(at: location) + "." + numbering("1", ..nums)
+    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + numbering("1", ..nums)
   }
   if ref {
     result
