@@ -2,7 +2,6 @@
   "SHOULD NEVER BE SHOWN"
 })
 
-// the ref: true/ref: false stuff doesn't work here
 #let set-equation-numbering(the-numbering) = {
   equation-numbering-func.update(old => the-numbering)
 }
@@ -24,7 +23,11 @@
   it
 }
 
+// TODO store heading level count in state?
+
 #show: style-equations
+
+#set math.equation(supplement: none)
 
 #set-equation-numbering((location: none, ..nums, ref: false) => "(A)")
 
