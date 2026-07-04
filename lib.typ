@@ -1,3 +1,5 @@
+#import "@preview/equate:0.3.3": equate
+
 #let equation-heading-level = state("equation-heading-level", 0)
 
 #let equation-numbering-func = state("equation-numbering-func", (..) => {
@@ -109,7 +111,7 @@ $ 1 + 1 $ <test4>
 #set heading(numbering: "[I.1]")
 
 #set-equation-numbering((heading-numbering: none, heading-nums: none, ref: false, ..nums) => {
-  let subnumbering = my-numbering("<A>", ref: ref, ..nums)
+  let subnumbering = my-numbering("<A.I>", ref: ref, ..nums)
   let result = if heading-numbering == none {
     subnumbering
   } else {
@@ -141,3 +143,17 @@ $ 1 + 1 $ <test7>
 $ 1 + 1 $ <test8>
 
 @test-1, @test0, @test1, @test2, @test3, @test4, @test5, @test6, @test7, @test8
+
+#show: equate.with(breakable: true, sub-numbering: true)
+
+The dot product of two vectors $arrow(a)$ and $arrow(b)$ can
+be calculated as shown in @dot-product.
+
+$
+  chevron.l a, b chevron.r &= arrow(a) dot arrow(b) \
+                       &= a_1 b_1 + a_2 b_2 + ... a_n b_n \
+                       &= sum_(i=1)^n a_i b_i. #<sum>
+$ <dot-product>
+
+The sum notation in @sum is a useful way to express the dot
+product @dot-product of two vectors.
