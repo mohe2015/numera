@@ -36,10 +36,11 @@ $ 1 + 1 $ <test0>
 
 #set-equation-numbering((location: none, ..nums, ref: false) => {
   let heading-numbering = query(selector(heading).before(location)).last(default: none)
+  let subnumbering = numbering("1", ..nums)
   let result = if heading-numbering == none or heading-numbering.numbering == none {
-    numbering("1", ..nums)
+    subnumbering
   } else {
-    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + numbering("1", ..nums)
+    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + subnumbering
   }
   if ref {
     result
@@ -72,10 +73,11 @@ $ 1 + 1 $ <test4>
 
 #equation-numbering-func.update(old => (location: none, ..nums, ref: false) => {
   let heading-numbering = query(selector(heading).before(location)).last(default: none)
+  let subnumbering = numbering("A", ..nums)
   let result = if heading-numbering == none or heading-numbering.numbering == none {
-    numbering("A", ..nums)
+    subnumbering
   } else {
-    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + numbering("1", ..nums)
+    numbering(heading-numbering.numbering, ..counter(heading).at(location)) + "." + subnumbering
   }
   if ref {
     result
