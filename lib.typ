@@ -1,3 +1,5 @@
+#let equation-heading-level = state("equation-heading-level", 0)
+
 #let equation-numbering-func = state("equation-numbering-func", (..) => {
   "SHOULD NEVER BE SHOWN"
 })
@@ -6,9 +8,11 @@
   equation-numbering-func.update(old => the-numbering)
 }
 
-#show heading.where(level: 1): it => {
-  counter(math.equation).update(0)
-  it
+#show heading: outer => {
+  if outer.level <= equation-heading-level.get() {
+    counter(math.equation).update(0)
+  }
+  outer
 }
 
 #let style-equations = it => {
@@ -23,7 +27,7 @@
   it
 }
 
-// TODO store heading level count in state?
+#equation-heading-level.update(0)
 
 #show: style-equations
 
