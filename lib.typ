@@ -80,7 +80,7 @@ $ 1 + 1 $ <test0>
     my-numbering(heading-numbering, ref: ref, ..heading-nums) + "." + subnumbering
   }
   if ref {
-    result
+    [* #result *]
   } else {
     "(" + result + ")"
   }
