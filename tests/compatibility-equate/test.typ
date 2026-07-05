@@ -4,10 +4,18 @@
 #show: equate.with(sub-numbering: true, number-mode: "line")
 #show: rules(level: 1)
 
+#let sub-numbering-state = state("equate/sub-numbering", false)
+
 #set math.equation(numbering: (ref: false, ..nums) => {
   let heading = display(heading, ref: ref)
   if heading != none {
     heading += "."
+  }
+  let metadata = query(selector(figure.where(kind: math.equation)).before(here())).last(default: none)
+  let nums = if sub-numbering-state.get() and metadata != none {
+    nums//metadata.body.value
+  } else {
+    nums
   }
   heading + my-numbering("(1.1)", ref: ref, ..nums)
 })
