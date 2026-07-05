@@ -15,8 +15,6 @@ cargo install --git https://github.com/sjfhsjfh/typship.git
 
 typship login universe
 
-utpm project publish
-
 export TYPST_PACKAGE_PATH=$PWD/packages
 typst-package-check check
 typstyle --check .
