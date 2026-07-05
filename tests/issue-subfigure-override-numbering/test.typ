@@ -1,5 +1,5 @@
 // only this way uses the correct numbering but we need to get the outer figure
-// show set rules with it are not replacing themselves correctly.
+// show set rules with `it =>` are not replacing themselves correctly.
 
 #show figure.where(kind: "subfigure"): set figure(numbering: (..nums) => {
   "X"
