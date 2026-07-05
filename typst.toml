@@ -1,4 +1,4 @@
 [package]
-name = "chapter-numbering"
+name = "numera"
 version = "0.0.1"
 entrypoint = "lib.typ"
