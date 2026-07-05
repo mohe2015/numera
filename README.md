@@ -11,11 +11,12 @@ cargo install --locked typst-cli
 cargo install --locked tytanic
 cargo install --locked typstyle
 cargo install --git https://github.com/typst/package-check.git
-cargo install --locked typship
+cargo install --git https://github.com/sjfhsjfh/typship.git
 
 export TYPST_PACKAGE_PATH=$PWD/packages
 typst-package-check check
 typstyle --check .
 tt run
-typship publish
+typship publish universe --dry-run
+typship publish universe
 ```
