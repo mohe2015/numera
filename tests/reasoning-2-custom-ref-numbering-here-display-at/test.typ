@@ -1,4 +1,4 @@
-// In a custom ref rule with display(at: it.element.location()), here() in numbering is the location of the element. But the style context is wrong.
+// In a custom ref rule with display(at: it.element.location()), here() in numbering is the location of the element. But the style context is wrong. Also we can't custom style the numbering in refs as we can't detect whether we are in a ref.
 
 #set math.equation(numbering: (..nums) => {
   let here = here()

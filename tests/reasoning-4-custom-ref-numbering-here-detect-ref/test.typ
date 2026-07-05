@@ -7,7 +7,7 @@
     return "too-early-layout-iteration"
   }
   assert(here == test.location())
-  "OK"
+  heading.numbering
 })
 
 #show ref: it => {
