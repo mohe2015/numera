@@ -1,4 +1,4 @@
-// The numbering should be able to detect whether it was called from an equation or ref context to render the numbering differently
+// The numbering is able to detect whether it was called from an equation or ref context to render the numbering differently. Unfortunately the wrong equation numbering is now used for refs.
 
 #set math.equation(numbering: (..nums, location: none, ref: false) => {
   if location == none { location = here() }
