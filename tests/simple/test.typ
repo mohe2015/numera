@@ -35,6 +35,8 @@ $ 1 + 1 $ <eq1-2>
 
 See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
+See @fig1-1, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @fig4-2
+
 #set heading(numbering: "[A.A]")
 
 = Appendix
@@ -45,6 +47,8 @@ $ 1 + 1 $ <eq2-2>
 #figure("F2.2", caption: "F2.2") <fig2-2>
 
 See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+
+See @fig1-1, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @fig4-2
 
 #set math.equation(numbering: (ref: false, ..nums) => {
   let heading = display(heading, ref: ref)
@@ -65,6 +69,8 @@ $ 1 + 1 $ <eq3-2>
 
 See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
+See @fig1-1, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @fig4-2
+
 #set heading(numbering: "[I.I]")
 
 = Appendix
@@ -76,3 +82,5 @@ $ 1 + 1 $ <eq4-2>
 #figure("F4.2", caption: "F4.2") <fig4-2>
 
 See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+
+See @fig1-1, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @fig4-2
