@@ -93,7 +93,7 @@
     link(location, result)
   }
 
-  // equate compatibility for (ref: true)
+  // equate compatibility for (ref: true) and correct location context
   // TODO upstream the display(at: ) as that should already fix quite a bit.
   show ref: it => {
     if it.element == none { return it }
