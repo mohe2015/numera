@@ -5,12 +5,26 @@
 
 #let trim-numbering(s) = s.match(pattern).captures.at(0)
 
-#let get-numbering(target) = {
-  query(selector(target).before(here())).last(default: (numbering: none)).numbering
+#let patch-numbering(the-numbering, ref: false) = {
+  if the-numbering == none {
+    none
+  } else if type(the-numbering) == str {
+    if ref {
+      trim-numbering(the-numbering)
+    } else {
+      the-numbering
+    }
+  } else {
+    the-numbering.with(ref: true)
+  }
 }
 
-#let display(target) = {
-  let numbering = get-numbering(target)
+#let get-numbering(target, ref: false) = {
+  patch-numbering(query(selector(target).before(here())).last(default: (numbering: none)).numbering, ref: ref)
+}
+
+#let display(target, ref: false) = {
+  let numbering = get-numbering(target, ref: ref)
   if numbering == none {
     return none
   }

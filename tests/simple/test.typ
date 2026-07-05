@@ -1,7 +1,7 @@
 #import "../../lib.typ": get-numbering, display
 
 #set math.equation(numbering: (..nums, ref: false) => {
-  let heading = display(heading)
+  let heading = display(heading, ref: ref)
   if heading != none {
     heading += "."
   }
