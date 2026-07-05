@@ -32,13 +32,12 @@
   counter(figure.where(kind: "subfigure")).update(0)
 
   show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
-  let heading = display(heading, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(S1a)", ref: ref, ..outer.counter.get(), ..nums)
-})
-
+    let heading = display(heading, ref: ref)
+    if heading != none {
+      heading += "."
+    }
+    heading + my-numbering("(S1a)", ref: ref, ..outer.counter.get(), ..nums)
+  })
 
   outer
 }
