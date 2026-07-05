@@ -1,7 +1,7 @@
 #import "@preview/equate:0.3.3": equate
 #import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
-#show: equate.with(sub-numbering: true)
 
+#show: equate.with()
 #show: rules(level: 1)
 
 #set math.equation(numbering: (ref: false, ..nums) => {
@@ -41,7 +41,7 @@ $ 1 + 1 $ <eq1-1>
 
 
 == Subtitle
-$ 1 + 1 $ <eq1-2>
+$ 1 + 1 #<sub> $ <eq1-2>
 #figure("F1.2", caption: "F1.2") <fig1-2>
 
 See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
