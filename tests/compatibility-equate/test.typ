@@ -1,7 +1,7 @@
 #import "@preview/equate:0.3.3": equate
 #import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
 
-#show: equate.with(sub-numbering: true)
+#show: equate.with(sub-numbering: true, number-mode: "line")
 #show: rules(level: 1)
 
 #set math.equation(numbering: (ref: false, ..nums) => {
@@ -41,10 +41,10 @@ $ 1 + 1 $ <eq1-1>
 
 
 == Subtitle
-$ 1 + 1 #<sub> $ <eq1-2>
+$ 1 + 1 #<eq1-2a> \ 2 + 2 #<eq1-2b> $ <eq1-2>
 #figure("F1.2", caption: "F1.2") <fig1-2>
 
-See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
 
@@ -57,7 +57,7 @@ $ 1 + 1 $ <eq2-1>
 $ 1 + 1 $ <eq2-2>
 #figure("F2.2", caption: "F2.2") <fig2-2>
 
-See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
 
@@ -67,7 +67,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
   if heading != none {
     heading += "-"
   }
-  heading + my-numbering("(1)", ref: ref, ..nums)
+  heading + my-numbering("(1.1)", ref: ref, ..nums)
 })
 
 #show normal-figure: set figure(numbering: (ref: false, ..nums) => {
@@ -92,12 +92,12 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 
 = Test 1
 
-$ 1 + 1 $ <eq3-1>
+$ 1 + 1 \ 2 + 2 $ <eq3-1>
 #figure("F3.1", caption: "F3.1") <fig3-1>
 $ 1 + 1 $ <eq3-2>
 #figure("F3.2", caption: "F3.2") <fig3-2>
 
-See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
 
@@ -115,6 +115,6 @@ $ 1 + 1 $ <eq4-1>
 $ 1 + 1 $ <eq4-2>
 #figure("F4.2", caption: "F4.2") <fig4-2>
 
-See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
+See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
