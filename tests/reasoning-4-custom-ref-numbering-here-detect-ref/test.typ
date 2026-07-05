@@ -1,13 +1,13 @@
 // The numbering should be able to detect whether it was called from an equation or ref context to render the numbering differently
 
-#set math.equation(numbering: (..nums) => {
-  let here = here()
+#set math.equation(numbering: (..nums, location: none, ref: false) => {
+  if location == none { location = here() }
   let test = query(<test>).first(default: none)
   if test == none  {
     return "too-early-layout-iteration"
   }
-  assert(here == test.location())
-  heading.numbering
+  assert(location == test.location())
+  repr(ref) + " " + heading.numbering
 })
 
 #show ref: it => {
@@ -15,8 +15,8 @@
   let here = here()
   let location = it.element.location()
   assert(here != location)
-  // The numbering will be executed with a context in which here() resolves to the provided location, so that numberings which involve further counters resolve correctly.
-  let rendered = counter(math.equation).display(at: location)
+  let nums = counter(math.equation).at(location)
+  let rendered = (math.equation.numbering)(..nums, location: location, ref: true)
   let result = if it.element.supplement == [] {
     rendered
   } else {
