@@ -1,11 +1,11 @@
-#import "../../lib.typ": get-numbering, display
+#import "../../lib.typ": get-numbering, display, my-numbering
 
-#set math.equation(numbering: (..nums, ref: false) => {
+#set math.equation(numbering: (ref: false, ..nums) => {
   let heading = display(heading, ref: ref)
   if heading != none {
     heading += "."
   }
-  heading + numbering("(1)", ..nums)
+  heading + my-numbering("(1)", ref: ref, ..nums)
 })
 
 = Test 1

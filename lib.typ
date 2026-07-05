@@ -15,12 +15,19 @@
       the-numbering
     }
   } else {
-    the-numbering.with(ref: true)
+    the-numbering.with(ref: ref)
   }
 }
 
-#let get-numbering(target, ref: false) = {
-  patch-numbering(query(selector(target).before(here())).last(default: (numbering: none)).numbering, ref: ref)
+#let my-numbering(the-numbering, ref: false, ..nums) = {
+  numbering(patch-numbering(the-numbering, ref: ref), ..nums)
+}
+
+#let get-numbering(target, ref: false, location: none) = {
+  if location == none {
+    location = here()
+  }
+  patch-numbering(query(selector(target).before(location)).last(default: (numbering: none)).numbering, ref: ref)
 }
 
 #let display(target, ref: false) = {
@@ -33,18 +40,12 @@
 
 // imitates default show rule with ref: true
 #show ref: it => {
+  assert(false)
   if it.element == none or it.element.func() != math.equation { return it }
   let here = here()
   let location = it.element.location()
   assert(here != location)
-  let equation-numbering = query(selector(math.equation).before(location)).last(default: (numbering: none)).numbering
-  if type(equation-numbering) == function {
-    equation-numbering = equation-numbering.with(ref: true)
-  }
-  if type(equation-numbering) == str {
-    equation-numbering = trim-numbering(equation-numbering)
-  }
-  let rendered = counter(math.equation).display(equation-numbering, at: location)
+  let rendered = counter(math.equation).display(get-numbering(math.equation, ref: true, location: location), at: location)
   let result = if it.element.supplement == [] {
     rendered
   } else {
