@@ -1,7 +1,7 @@
 #import "@preview/equate:0.3.3": equate
 #import "../../lib.typ": (
-  display-numbering, get-numbering, my-numbering, normal-figure, outer-figure-counter-value,
-  numera,
+  display-numbering, get-numbering, my-numbering, normal-figure, numera,
+  outer-figure-counter-value,
 )
 
 #show: equate.with(sub-numbering: true, number-mode: "line")
