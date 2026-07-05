@@ -1,4 +1,3 @@
-
 #let counting-symbols = "1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵"
 #let non-counting = "[^" + counting-symbols + "]"
 #let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
@@ -38,18 +37,20 @@
   counter(target).display(numbering)
 }
 
-// imitates default show rule with ref: true
-#show ref: it => {
-  assert(false)
-  if it.element == none or it.element.func() != math.equation { return it }
-  let here = here()
-  let location = it.element.location()
-  assert(here != location)
-  let rendered = counter(math.equation).display(get-numbering(math.equation, ref: true, location: location), at: location)
-  let result = if it.element.supplement == [] {
-    rendered
-  } else {
-    [#it.element.supplement~#rendered]
+#let rules(it) = {
+  // imitates default show rule with ref: true
+  show ref: it => {
+    if it.element == none or it.element.func() != math.equation { return it }
+    let here = here()
+    let location = it.element.location()
+    assert(here != location)
+    let rendered = counter(math.equation).display(get-numbering(math.equation, ref: true, location: location), at: location)
+    let result = if it.element.supplement == [] {
+      rendered
+    } else {
+      [#it.element.supplement~#rendered]
+    }
+    link(location, result)
   }
-  link(location, result)
+  it
 }

@@ -1,4 +1,6 @@
-#import "../../lib.typ": get-numbering, display, my-numbering
+#import "../../lib.typ": get-numbering, display, my-numbering, rules
+
+#show: rules
 
 #set math.equation(numbering: (ref: false, ..nums) => {
   let heading = display(heading, ref: ref)
