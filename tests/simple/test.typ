@@ -54,6 +54,8 @@ See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
   heading + my-numbering("(1)", ref: ref, ..nums)
 })
 
+#set math.equation(supplement: "Eq")
+
 = Test 1
 
 $ 1 + 1 $ <eq3-1>
