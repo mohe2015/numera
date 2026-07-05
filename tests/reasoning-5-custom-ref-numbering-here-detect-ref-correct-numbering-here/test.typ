@@ -1,4 +1,4 @@
-// The numbering is able to detect whether it was called from an equation or ref context to render the numbering differently.
+// The numbering is able to detect whether it was called from an equation or ref context to render the numbering differently. here() works again.
 
 #set math.equation(numbering: (..nums, ref: false) => {
   let location = here()
@@ -17,7 +17,7 @@
   let location = it.element.location()
   assert(here != location)
   let equation-numbering = query(selector(math.equation).before(location)).last(default: (numbering: none)).numbering
-  let rendered = counter(math.equation).display(equation-numbering, at: location)
+  let rendered = counter(math.equation).display(equation-numbering.with(ref: true), at: location)
   let result = if it.element.supplement == [] {
     rendered
   } else {
