@@ -1,4 +1,4 @@
-// The numbering is able to detect whether it was called from an equation or ref context to render the numbering differently. here() works again.
+// The numbering is able to detect whether it was called from an equation or ref context to render the numbering differently. here() works again. Plain numberings don't trim for refs.
 
 #set math.equation(numbering: (..nums, ref: false) => {
   let location = here()
