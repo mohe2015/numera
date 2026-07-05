@@ -11,12 +11,6 @@
   if heading != none {
     heading += "."
   }
-  let figure = query(selector(figure.where(kind: math.equation)).after(here())).first(default: none)
-  let nums = if sub-numbering-state.get() and figure != none {
-    figure.body.value
-  } else {
-    nums
-  }
   heading + my-numbering("(1.1)", ref: ref, ..nums)
 })
 
