@@ -16,11 +16,16 @@
   let here = here()
   let location = it.element.location()
   assert(here != location)
-  let equation-numbering = query(selector(math.equation).before(location)).last(default: (numbering: none)).numbering
+  let equation-numbering = query(selector(math.equation).before(location))
+    .last(default: (numbering: none))
+    .numbering
   if type(equation-numbering) == function {
     equation-numbering = equation-numbering.with(ref: true)
   }
-  let rendered = counter(math.equation).display(equation-numbering, at: location)
+  let rendered = counter(math.equation).display(
+    equation-numbering,
+    at: location,
+  )
   let result = if it.element.supplement == [] {
     rendered
   } else {
@@ -41,7 +46,7 @@ $ 1 + 1 $ <test1>
 
 @test1 <ref11> @test2 <ref12> @test3 <ref13>
 
-#set math.equation(numbering: (..nums,  ref: false) => {
+#set math.equation(numbering: (..nums, ref: false) => {
   let location = here()
   let test1 = query(<test1>).first(default: none)
   let test2 = query(<test2>).first(default: none)

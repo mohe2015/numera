@@ -22,14 +22,19 @@
   let here = here()
   let location = it.element.location()
   assert(here != location)
-  let equation-numbering = query(selector(math.equation).before(location)).last(default: (numbering: none)).numbering
+  let equation-numbering = query(selector(math.equation).before(location))
+    .last(default: (numbering: none))
+    .numbering
   if type(equation-numbering) == function {
     equation-numbering = equation-numbering.with(ref: true)
   }
   if type(equation-numbering) == str {
     equation-numbering = trim-numbering(equation-numbering)
   }
-  let rendered = counter(math.equation).display(equation-numbering, at: location)
+  let rendered = counter(math.equation).display(
+    equation-numbering,
+    at: location,
+  )
   let result = if it.element.supplement == [] {
     rendered
   } else {

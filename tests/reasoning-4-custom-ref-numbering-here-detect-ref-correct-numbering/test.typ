@@ -17,7 +17,9 @@
   let location = it.element.location()
   assert(here != location)
   let nums = counter(math.equation).at(location)
-  let equation-numbering = query(selector(math.equation).before(location)).last(default: (numbering: none)).numbering
+  let equation-numbering = query(selector(math.equation).before(location))
+    .last(default: (numbering: none))
+    .numbering
   let rendered = (equation-numbering)(..nums, location: location, ref: true)
   let result = if it.element.supplement == [] {
     rendered

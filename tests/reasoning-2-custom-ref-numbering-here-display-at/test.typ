@@ -3,7 +3,7 @@
 #set math.equation(numbering: (..nums) => {
   let here = here()
   let test = query(<test>).first(default: none)
-  if test == none  {
+  if test == none {
     return "too-early-layout-iteration"
   }
   assert(here == test.location())

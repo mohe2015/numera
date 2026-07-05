@@ -1,4 +1,7 @@
-#import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
+#import "../../lib.typ": (
+  display, get-numbering, my-numbering, normal-figure, outer-figure-count,
+  rules,
+)
 
 #show: rules(level: 1)
 
@@ -22,7 +25,10 @@
 
 $ 1 + 1 $ <eq1-1>
 
-#show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
+#show figure.where(kind: "subfigure"): set figure(numbering: (
+  ref: false,
+  ..nums,
+) => {
   let outer-count = outer-figure-count()
   let heading = display(heading, ref: ref)
   if heading != none {
@@ -31,11 +37,14 @@ $ 1 + 1 $ <eq1-1>
   heading + my-numbering("(S1a)", ref: ref, ..outer-count, ..nums)
 })
 
-#figure([
-  F1.1
-  #figure("S1.1.a", caption: "S1.1.a", kind: "subfigure") <s1-1-a>
-  #figure("S1.1.b", caption: "S1.1.b", kind: "subfigure") <s1-1-b>
-], caption: "F1.1") <fig1-1>
+#figure(
+  [
+    F1.1
+    #figure("S1.1.a", caption: "S1.1.a", kind: "subfigure") <s1-1-a>
+    #figure("S1.1.b", caption: "S1.1.b", kind: "subfigure") <s1-1-b>
+  ],
+  caption: "F1.1",
+) <fig1-1>
 
 
 == Subtitle
@@ -76,7 +85,10 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
   heading + my-numbering("(1)", ref: ref, ..nums)
 })
 
-#show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
+#show figure.where(kind: "subfigure"): set figure(numbering: (
+  ref: false,
+  ..nums,
+) => {
   let outer-count = outer-figure-count()
   let heading = display(heading, ref: ref)
   if heading != none {
@@ -104,11 +116,14 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 = Appendix
 
 $ 1 + 1 $ <eq4-1>
-#figure([
-  F4.1
-  #figure("S4.1.a", caption: "S4.1.a", kind: "subfigure") <s4-1-a>
-  #figure("S4.1.b", caption: "S4.1.b", kind: "subfigure") <s4-1-b>
-], caption: "F4.1") <fig4-1>
+#figure(
+  [
+    F4.1
+    #figure("S4.1.a", caption: "S4.1.a", kind: "subfigure") <s4-1-a>
+    #figure("S4.1.b", caption: "S4.1.b", kind: "subfigure") <s4-1-b>
+  ],
+  caption: "F4.1",
+) <fig4-1>
 == Subtitle
 $ 1 + 1 $ <eq4-2>
 #figure("F4.2", caption: "F4.2") <fig4-2>

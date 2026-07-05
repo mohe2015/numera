@@ -28,7 +28,12 @@
   if location == none {
     location = here()
   }
-  patch-numbering(query(selector(target).before(location)).last(default: (numbering: none)).numbering, ref: ref)
+  patch-numbering(
+    query(selector(target).before(location))
+      .last(default: (numbering: none))
+      .numbering,
+    ref: ref,
+  )
 }
 
 #let display(target, ref: false) = {
@@ -39,9 +44,16 @@
   counter(target).display(numbering)
 }
 
-#let normal-figure = figure.where(kind: image).or(figure.where(kind: table)).or(figure.where(kind: raw))
+#let normal-figure = (
+  figure
+    .where(kind: image)
+    .or(figure.where(kind: table))
+    .or(figure.where(kind: raw))
+)
 
-#let outer-figure-count() = query(selector(normal-figure).before(here())).last().counter.get()
+#let outer-figure-count() = (
+  query(selector(normal-figure).before(here())).last().counter.get()
+)
 
 #let rules(level: 0) = it => {
   show heading: it => {
@@ -57,7 +69,9 @@
   show normal-figure: outer => {
     counter(figure.where(kind: "subfigure")).update(0)
 
-    show figure.where(kind: "subfigure"): set figure(supplement: outer.supplement)
+    show figure.where(kind: "subfigure"): set figure(
+      supplement: outer.supplement,
+    )
 
     outer
   }
@@ -68,7 +82,10 @@
     let here = here()
     let location = it.element.location()
     assert(here != location)
-    let rendered = counter(math.equation).display(patch-numbering(it.element.numbering, ref: true), at: location)
+    let rendered = counter(math.equation).display(
+      patch-numbering(it.element.numbering, ref: true),
+      at: location,
+    )
     let result = if it.element.supplement == [] {
       rendered
     } else {
@@ -84,7 +101,10 @@
     let here = here()
     let location = it.element.location()
     assert(here != location)
-    let rendered = it.element.counter.display(patch-numbering(it.element.numbering, ref: true), at: location)
+    let rendered = it.element.counter.display(
+      patch-numbering(it.element.numbering, ref: true),
+      at: location,
+    )
     let result = if it.element.supplement == [] {
       rendered
     } else {
@@ -106,18 +126,28 @@
     let nums = if equate-sub-numbering-state.at(it.element.location()) {
       it.element.body.value
     } else {
-      (it.element.body.value.first() + it.element.body.value.slice(1).sum(default: 1) - 1,)
+      (
+        it.element.body.value.first()
+          + it.element.body.value.slice(1).sum(default: 1)
+          - 1,
+      )
     }
 
     assert(
       it.element.numbering != none,
-      message: "cannot reference equation without numbering."
+      message: "cannot reference equation without numbering.",
     )
 
     let here = here()
     let location = it.element.location()
     assert(here != location)
-    let rendered = it.element.counter.display((..) => numbering(patch-numbering(it.element.numbering, ref: true), ..nums), at: location)
+    let rendered = it.element.counter.display(
+      (..) => numbering(
+        patch-numbering(it.element.numbering, ref: true),
+        ..nums,
+      ),
+      at: location,
+    )
     let result = if it.element.supplement == [] {
       rendered
     } else {
