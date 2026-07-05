@@ -19,9 +19,8 @@
 })
 
 #show normal-figure: outer => {
-  counter(figure.where(kind: "subfigure")).update(0) // lib
-
-  show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
+  // subfigures
+  set figure(numbering: (ref: false, ..nums) => {
     let heading = display(heading, ref: ref)
     if heading != none {
       heading += "."
@@ -68,6 +67,29 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
   }
   heading + my-numbering("(1)", ref: ref, ..nums)
 })
+
+#show normal-figure: set figure(numbering: (ref: false, ..nums) => {
+  let heading = display(heading, ref: ref)
+  if heading != none {
+    heading += "-"
+  }
+  heading + my-numbering("(1)", ref: ref, ..nums)
+})
+
+
+// TODO FIXME doesn't work
+#show normal-figure: outer => {
+  // subfigures
+  set figure(numbering: (ref: false, ..nums) => {
+    let heading = display(heading, ref: ref)
+    if heading != none {
+      heading += "."
+    }
+    heading + my-numbering("(X1a)", ref: ref, ..outer.counter.get(), ..nums)
+  })
+
+  outer
+}
 
 #set math.equation(supplement: "Eq")
 #set figure(supplement: "Fig")
