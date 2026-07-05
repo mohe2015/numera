@@ -41,8 +41,8 @@ $ 1 + 1 $ <test1>
 
 @test1 <ref11> @test2 <ref12> @test3 <ref13>
 
-#set math.equation(numbering: (..nums, location: none, ref: false) => {
-  if location == none { location = here() }
+#set math.equation(numbering: (..nums,  ref: false) => {
+  let location = here()
   let test1 = query(<test1>).first(default: none)
   let test2 = query(<test2>).first(default: none)
   if test1 == none or test2 == none {
