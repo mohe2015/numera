@@ -11,9 +11,14 @@
   if heading != none {
     heading += "."
   }
-  let metadata = query(selector(figure.where(kind: math.equation)).before(here())).last(default: none)
-  let nums = if sub-numbering-state.get() and metadata != none {
-    nums//metadata.body.value
+  let figure = query(selector(figure.where(kind: math.equation)).after(here())).first(default: none)
+  let nums = if sub-numbering-state.get() and figure != none {
+    let tmp = query(selector(math.equation).before(figure.location())).last().location() == here()
+    if true {
+      figure.body.value
+    } else {
+      nums
+    }
   } else {
     nums
   }
