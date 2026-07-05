@@ -2,12 +2,13 @@
 
 #set math.equation(numbering: (..nums, location: none, ref: false) => {
   if location == none { location = here() }
-  let test = query(<test>).first(default: none)
-  if test == none  {
+  let test1 = query(<test1>).first(default: none)
+  let test2 = query(<test2>).first(default: none)
+  if test1 == none or test2 == none {
     return "too-early-layout-iteration"
   }
-  assert(location == test.location())
-  repr(ref) + " " + heading.numbering
+  assert(location == test1.location() or location == test2.location())
+  repr(ref) + "+" + heading.numbering
 })
 
 #show ref: it => {
@@ -29,10 +30,33 @@
 
 = Test
 
-$ 1 + 1 $ <test>
+$ 1 + 1 $ <test1>
 
 #set heading(numbering: "a")
 
 = Abc
 
-@test <ref>
+@test1 <ref11> @test2 <ref12>
+
+#set math.equation(numbering: (..nums, location: none, ref: false) => {
+  if location == none { location = here() }
+  let test1 = query(<test1>).first(default: none)
+  let test2 = query(<test2>).first(default: none)
+  if test1 == none or test2 == none {
+    return "too-early-layout-iteration"
+  }
+  assert(location == test1.location() or location == test2.location())
+  repr(ref) + "-" + heading.numbering
+})
+
+#set heading(numbering: "1")
+
+= Test
+
+$ 1 + 1 $ <test2>
+
+#set heading(numbering: "a")
+
+= Abc
+
+@test1 <ref21> @test2 <ref22>
