@@ -1,3 +1,5 @@
+// In a custom ref rule, here() in numbering is the location of the element or the ref
+
 #set math.equation(numbering: (..nums) => {
   let here = here()
   let test = query(<test>).first(default: none)
