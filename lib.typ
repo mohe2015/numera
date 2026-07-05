@@ -52,5 +52,19 @@
     }
     link(location, result)
   }
+
+  show ref: it => {
+    if it.element == none or it.element.func() != figure { return it }
+    let here = here()
+    let location = it.element.location()
+    assert(here != location)
+    let rendered = counter(figure).display(patch-numbering(it.element.numbering, ref: true), at: location)
+    let result = if it.element.supplement == [] {
+      rendered
+    } else {
+      [#it.element.supplement~#rendered]
+    }
+    link(location, result)
+  }
   it
 }
