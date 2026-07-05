@@ -1,3 +1,5 @@
+#let equate-sub-numbering-state = state("equate/sub-numbering", false)
+
 #let counting-symbols = "1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵"
 #let non-counting = "[^" + counting-symbols + "]"
 #let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
@@ -90,5 +92,37 @@
     }
     link(location, result)
   }
+
+  // equate compatibility for (ref: true)
+  show ref: it => {
+    if it.element == none { return it }
+    if it.element.func() != figure { return it }
+    if it.element.kind != math.equation { return it }
+    if it.element.body == none { return it }
+    if it.element.body.func() != metadata { return it }
+
+    let nums = if equate-sub-numbering-state.at(it.element.location()) {
+      it.element.body.value
+    } else {
+      (it.element.body.value.first() + it.element.body.value.slice(1).sum(default: 1) - 1,)
+    }
+
+    assert(
+      it.element.numbering != none,
+      message: "cannot reference equation without numbering."
+    )
+
+    let here = here()
+    let location = it.element.location()
+    assert(here != location)
+    let rendered = it.element.counter.display((..) => numbering(patch-numbering(it.element.numbering, ref: true), ..nums), at: location)
+    let result = if it.element.supplement == [] {
+      rendered
+    } else {
+      [#it.element.supplement~#rendered]
+    }
+    link(location, result)
+  }
+
   it
 }
