@@ -44,7 +44,7 @@
     let here = here()
     let location = it.element.location()
     assert(here != location)
-    let rendered = counter(math.equation).display(get-numbering(math.equation, ref: true, location: location), at: location)
+    let rendered = counter(math.equation).display(patch-numbering(it.element.numbering, ref: true), at: location)
     let result = if it.element.supplement == [] {
       rendered
     } else {
