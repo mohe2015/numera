@@ -36,7 +36,7 @@ $ 1 + 1 $ <test1>
 
 = Abc
 
-@test1 <ref11> @test2 <ref12>
+@test1 <ref11> @test2 <ref12> @test3 <ref13>
 
 #set math.equation(numbering: (..nums, location: none, ref: false) => {
   if location == none { location = here() }
@@ -59,4 +59,18 @@ $ 1 + 1 $ <test2>
 
 = Abc
 
-@test1 <ref21> @test2 <ref22>
+@test1 <ref21> @test2 <ref22> @test3 <ref23>
+
+#set math.equation(numbering: "I")
+
+#set heading(numbering: "1")
+
+= Test
+
+$ 1 + 1 $ <test3>
+
+#set heading(numbering: "a")
+
+= Abc
+
+@test1 <ref31> @test2 <ref32> @test3 <ref33>
