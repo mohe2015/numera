@@ -39,6 +39,8 @@
 
 #let normal-figure = figure.where(kind: image).or(figure.where(kind: table)).or(figure.where(kind: raw))
 
+#let outer-figure-count() = query(selector(normal-figure).before(here())).last().counter.get()
+
 #let rules(level) = it => {
   show heading: it => {
     if it.level <= level {

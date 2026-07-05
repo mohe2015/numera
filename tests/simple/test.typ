@@ -1,4 +1,4 @@
-#import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure
+#import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
 
 #show: rules(1)
 
@@ -23,7 +23,7 @@
 $ 1 + 1 $ <eq1-1>
 
 #show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
-  let outer-count = query(selector(normal-figure).before(here())).last().counter.get()
+  let outer-count = outer-figure-count()
   let heading = display(heading, ref: ref)
   if heading != none {
     heading += "."
@@ -77,7 +77,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 })
 
 #show figure.where(kind: "subfigure"): set figure(numbering: (ref: false, ..nums) => {
-  let outer-count = query(selector(normal-figure).before(here())).last().counter.get()
+  let outer-count = outer-figure-count()
   let heading = display(heading, ref: ref)
   if heading != none {
     heading += "."
