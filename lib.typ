@@ -37,6 +37,8 @@
   counter(target).display(numbering)
 }
 
+#let normal-figure = figure.where(kind: image).or(figure.where(kind: table)).or(figure.where(kind: raw))
+
 #let rules(level) = it => {
   show heading: it => {
     if it.level <= level {
@@ -48,8 +50,13 @@
     it
   }
 
-  // TODO set outer supplement
-  show figure.where(kind: "subfigure"): set figure(supplement: "Subfigure")
+  show normal-figure: outer => {
+    counter(figure.where(kind: "subfigure")).update(0)
+
+    show figure.where(kind: "subfigure"): set figure(supplement: outer.supplement)
+
+    outer
+  }
 
   // imitates default show rule with ref: true
   show ref: it => {
@@ -81,5 +88,3 @@
   }
   it
 }
-
-#let normal-figure = figure.where(kind: image).or(figure.where(kind: table)).or(figure.where(kind: raw))
