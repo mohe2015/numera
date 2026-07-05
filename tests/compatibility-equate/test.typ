@@ -1,5 +1,6 @@
-#import "@preview/equate:0.3.3"
+#import "@preview/equate:0.3.3": equate
 #import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
+#show: equate.with(sub-numbering: true)
 
 #show: rules(level: 1)
 
