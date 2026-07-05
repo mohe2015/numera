@@ -94,6 +94,7 @@
   }
 
   // equate compatibility for (ref: true)
+  // TODO upstream the display(at: ) as that should already fix quite a bit.
   show ref: it => {
     if it.element == none { return it }
     if it.element.func() != figure { return it }
