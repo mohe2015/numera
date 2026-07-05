@@ -1,7 +1,7 @@
 #import "@preview/equate:0.3.3": equate
 #import "../../lib.typ": get-numbering, display, my-numbering, rules, normal-figure, outer-figure-count
 
-#show: equate.with()
+#show: equate.with(sub-numbering: true)
 #show: rules(level: 1)
 
 #set math.equation(numbering: (ref: false, ..nums) => {
@@ -9,7 +9,7 @@
   if heading != none {
     heading += "."
   }
-  heading + my-numbering("(1)", ref: ref, ..nums)
+  heading + my-numbering("(1.1)", ref: ref, ..nums)
 })
 
 #show normal-figure: set figure(numbering: (ref: false, ..nums) => {
