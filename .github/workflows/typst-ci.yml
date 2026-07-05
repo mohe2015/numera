@@ -17,6 +17,10 @@ jobs:
         uses: cargo-bins/cargo-binstall@main
       - name: Install Typst tooling (typstyle & tytanic)
         run: cargo binstall tytanic typstyle
+      - name: Install typst-package-check
+        run: cargo install --git https://github.com/typst/package-check.git
+      - name: Check package
+        run: typst-package-check check
       - name: Check formatting with typstyle
         run: typstyle --check .
       - name: Run regression tests with tytanic
