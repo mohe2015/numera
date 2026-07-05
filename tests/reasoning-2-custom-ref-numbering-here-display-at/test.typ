@@ -1,4 +1,4 @@
-// In a custom ref rule, here() in numbering is the location of the element or the ref
+// In a custom ref rule with display(at: it.element.location()), here() in numbering is the location of the element
 
 #set math.equation(numbering: (..nums) => {
   let here = here()
@@ -15,6 +15,7 @@
   let here = here()
   let location = it.element.location()
   assert(here != location)
+  // The numbering will be executed with a context in which here() resolves to the provided location, so that numberings which involve further counters resolve correctly.
   let rendered = counter(math.equation).display(at: location)
   let result = if it.element.supplement == [] {
     rendered
