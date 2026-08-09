@@ -6,6 +6,12 @@
 
 #let trim-numbering(s) = s.match(pattern).captures.at(0)
 
+# `ref` indicates whether numbering is rendered for an inline reference (`@label`)
+# instead of at the element display site.
+# - For string patterns (e.g. "(1)"), `ref: true` trims wrappers so references can be
+#   `Eq. 1.2` while displayed numbers stay `(1.2)`.
+# - For function-valued numbering, we forward `ref` into the function so callers can
+#   choose display-vs-reference formatting explicitly.
 #let patch-numbering(the-numbering, ref: false) = {
   if the-numbering == none {
     none
@@ -42,6 +48,54 @@
     return none
   }
   counter(target).display(numbering)
+}
+
+# Returns the current heading numbering prefix.
+# `level` lets you clamp the prefix depth:
+# - `none` (default): full heading depth
+# - `2`: keep only first 2 heading components (e.g. `1.2` at heading `1.2.4`)
+# This is useful with `numera(level: 2)` when you want resets at level 2 and
+# contiguous counters for deeper heading levels, without including deeper prefixes.
+# Uses the active heading numbering style and returns `none` when there is no heading
+# context.
+# This only builds prefixes; it does not reset counters.
+# Low-level alternative: `display-numbering(heading, ref: ref)`.
+# See also: `prefixed-numbering`.
+#let heading-prefix(level: none, ref: false, target: heading) = {
+  let heading-numbering = get-numbering(target, ref: ref)
+  if heading-numbering == none {
+    return none
+  }
+  let nums = counter(target).get()
+  if level != none {
+    nums = nums.slice(0, level)
+  }
+  if nums.len() == 0 {
+    return none
+  }
+  numbering(heading-numbering, ..nums)
+}
+
+# Convenience helper for common heading-prefixed equation/figure numbering.
+# `the-numbering` is the local counter style (e.g. "(1)" or "1a").
+# `level` controls how many heading components are kept in the prefix.
+# `separator` is inserted between heading prefix and local numbering.
+# `ref` is forwarded so display/reference rendering stays consistent.
+#let prefixed-numbering(
+  the-numbering,
+  ref: false,
+  level: none,
+  separator: ".",
+  target: heading,
+  ..nums,
+) = {
+  let prefix = heading-prefix(level: level, ref: ref, target: target)
+  let number = my-numbering(the-numbering, ref: ref, ..nums)
+  if prefix == none {
+    number
+  } else {
+    prefix + separator + number
+  }
 }
 
 #let normal-figure = (
