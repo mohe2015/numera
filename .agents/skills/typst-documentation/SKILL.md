@@ -146,10 +146,30 @@ typst compile input.typ output.pdf     # Compile to PDF
 typst compile input.typ output.html    # Compile to HTML (if enabled)
 typst watch input.typ                  # Watch and recompile on changes
 typst init my-project                  # Create new project
-typst eval "1 + 1"                     # Evaluate inline Typst code
 typst fonts                            # List discovered fonts
 typst info                             # Debug information
 ```
+
+### Testing fragments with `typst eval`
+
+Use `typst eval` to quickly test small Typst expressions without creating a file:
+
+```bash
+# Basic evaluation
+typst eval '"hello" + " world"'           # Outputs: hello world
+typst eval 'numbering("1.a", 3, 2)'       # Outputs: 3.b
+
+# Test numbering patterns
+typst eval 'numbering("(1)", 5)'          # Outputs: (5)
+typst eval 'numbering("(a)", 3)'          # Outputs: (c)
+typst eval 'numbering("1a", 2, 3)'        # Outputs: 2c
+
+# Test with imports (requires TYPST_PACKAGE_PATH)
+export TYPST_PACKAGE_PATH=$PWD/packages
+typst eval '#import "@preview/numera:0.0.1": numera; "ok"'
+```
+
+**Note:** `typst eval` runs in an isolated context. For testing show rules, queries, or counters, compile a full `.typ` file instead.
 
 ### Important Environment Variables
 
@@ -190,6 +210,39 @@ Look for patterns like:
 #import "std" from "typst"    // stdlib import
 ```
 
+### Numbering Patterns
+The `numbering(pattern, n1, n2, ...)` function maps each **counting symbol** in the pattern to a sequential number. Counting symbols are: `1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵`. Non-counting characters (parentheses, dots, etc.) are preserved literally.
+
+```typst
+#numbering("1.a", 3, 2)       // "3.b" — 1st number as digit, 2nd as lowercase letter
+#numbering("(1)", 5)          // "(5)" — single number in parentheses
+#numbering("1a", 2, 3)        // "2c" — digit then lowercase letter
+#numbering("Fig 1a", 1, 2)    // "Fig 1b" — literal "Fig " then digit then letter
+```
+
+To mix numbering styles (e.g., outer figure as digit, subfigure as letter), pass separate numbers:
+```typst
+#numbering("1a", outer-count, subfig-count)  // e.g. "1a", "1b"
+```
+
+### Labels inside grid cells
+Labels (`<label>`) cannot follow function calls inside other function arguments. Use **content blocks** (`[...]`) to wrap labeled content:
+
+```typst
+#grid(
+  columns: 3,
+  [ #figure("A", caption: "First", kind: "subfigure") <sub-a> ],
+  [ #figure("B", caption: "Second", kind: "subfigure") <sub-b> ],
+)
+```
+
+### Extracting text from PDFs for debugging
+Use `pdftotext` to verify rendered text output:
+```bash
+typst compile input.typ output.pdf
+pdftotext output.pdf -
+```
+
 ## Testing Typst Documentation Examples
 
 When reading examples from the docs, you can test them in the current project:
@@ -197,12 +250,17 @@ When reading examples from the docs, you can test them in the current project:
 ```bash
 export TYPST_PACKAGE_PATH=$PWD/packages
 
-# Test a snippet inline:
-typst eval '1 + 1'
-typst eval '#heading("Hello")'
+# Test a snippet inline (simple expressions only):
+typst eval '"hello" + " world"'
+typst eval 'numbering("1.a", 3, 2)'
 
-# Or create a temporary test file:
+# For complex features (show rules, counters, queries): create a temp file
 echo '#heading("Test")' | typst compile -
+
+# Verify PDF text output:
+export TYPST_PACKAGE_PATH=$PWD/packages
+typst compile input.typ output.pdf
+pdftotext output.pdf -
 ```
 
 ## Tips
