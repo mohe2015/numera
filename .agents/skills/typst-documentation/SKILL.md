@@ -1,6 +1,6 @@
 ---
 name: typst-documentation
-description: Instructions to read and use the Typst documentation
+description: When you have problems with Typst usage this provides documentation
 ---
 
 When you need to read the Typst documentation, consult the local documentation in `~/Documents/typst/docs/`. If this directory does not exist, clone the repository first:
