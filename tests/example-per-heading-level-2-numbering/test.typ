@@ -11,7 +11,7 @@
   if numbering == none {
     return none
   }
-  let heading = counter(heading).display((..nums, ref: ref) => my-numbering("1.1", ..nums.pos().slice(0, calc.min(2, nums.pos().len())), ref: ref))
+  let heading = counter(heading).display((..nums, ref: ref) => my-numbering(numbering, ..nums.pos().slice(0, calc.min(2, nums.pos().len())), ref: ref))
   if heading != none {
     heading += "."
   }
