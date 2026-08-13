@@ -3,7 +3,7 @@
   outer-figure-counter-value,
 )
 
-#show: numera(level: 2)
+#show: numera(level: 1)
 #set heading(numbering: "1.1.1")
 
 #set math.equation(numbering: (ref: false, ..nums) => {
@@ -18,19 +18,19 @@
 $ E = m c^2 $ <eq1.1>
 
 == Section 1.1
-$ E = m c^2 $ <eq1.1.1>
+$ E = m c^2 $ <eq1.2>
 
 == Section 1.2
-$ E = m c^2 $ <eq1.2.1>
+$ E = m c^2 $ <eq1.3>
 
 === Sub-Section 1.2.1
-$ E = m c^2 $ <eq1.2.2>
+$ E = m c^2 $ <eq1.4>
 
 === Sub-Section 1.2.2
-$ E = m c^2 $ <eq1.2.3>
+$ E = m c^2 $ <eq1.5>
 
 == Section 1.3
-$ E = m c^2 $ <eq1.3.1>
+$ E = m c^2 $ <eq1.6>
 
 = Chapter 2
 $ E = m c^2 $ <eq2.1>
