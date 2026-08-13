@@ -11,7 +11,7 @@
   if numbering == none {
     return none
   }
-  let last = query(heading.where(level: 2).before(here())).last(default: none)
+  let last = query(heading.where(level: 2).before(here()).or(selector(heading).before(here()))).last(default: none)
   if last == none {
     return none
   }
