@@ -7,7 +7,15 @@
 #set heading(numbering: "1.1.1")
 
 #set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let numbering = get-numbering(heading, ref: ref)
+  if numbering == none {
+    return none
+  }
+  let last = query(heading.where(level: 2).before(here())).last(default: none)
+  if last == none {
+    return none
+  }
+  let heading = counter(heading).display(numbering, at: last.location())
   if heading != none {
     heading += "."
   }
