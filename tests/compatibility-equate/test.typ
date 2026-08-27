@@ -1,7 +1,7 @@
 #import "@preview/equate:0.3.3": equate
 #import "@preview/numera:0.0.1": (
   display-numbering, get-numbering, heading-dependent, my-numbering,
-  normal-figure, numera, outer-figure-counter-value,
+  normal-figure, numera, outer-figure-counter-value, subfigure-counter-dependent
 )
 
 #show: equate.with(sub-numbering: true, number-mode: "line")
@@ -9,29 +9,15 @@
 
 #set math.equation(numbering: heading-dependent(1, "(1.1)"))
 
-#show normal-figure: set figure(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(1)", ref: ref, ..nums)
-})
+#show normal-figure: set figure(numbering: heading-dependent(1, "(1)"))
 
 = Test 1
 
 $ 1 + 1 $ <eq1-1>
 
-#show figure.where(kind: "subfigure"): set figure(numbering: (
-  ref: false,
-  ..nums,
-) => {
-  let outer-count = outer-figure-counter-value()
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(S1a)", ref: ref, ..outer-count, ..nums)
-})
+#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(1, subfigure-counter-dependent("(S1a)")))
+// or
+//#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-counter-dependent(heading-dependent(1, "(S1a)")))
 
 #figure(
   [
