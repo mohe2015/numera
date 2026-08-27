@@ -7,11 +7,7 @@
 #set heading(numbering: "1.1.1")
 
 #set math.equation(numbering: (ref: false, ..nums) => {
-  let numbering = get-numbering(heading, ref: ref)
-  if numbering == none {
-    return none
-  }
-  let heading = counter(heading).display((..nums, ref: ref) => my-numbering(numbering, ..nums.pos().slice(0, calc.min(2, nums.pos().len())), ref: ref))
+  let heading = display-numbering(heading, 2, ref: ref)
   if heading != none {
     heading += "."
   }

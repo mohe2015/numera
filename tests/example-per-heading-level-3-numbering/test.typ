@@ -7,7 +7,7 @@
 #set heading(numbering: "1.1.1")
 
 #set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 3, ref: ref)
   if heading != none {
     heading += "."
   }

@@ -8,7 +8,7 @@
 #show: numera(level: 1)
 
 #set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "."
   }
@@ -16,7 +16,7 @@
 })
 
 #show normal-figure: set figure(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "."
   }
@@ -32,7 +32,7 @@ $ 1 + 1 $ <eq1-1>
   ..nums,
 ) => {
   let outer-count = outer-figure-counter-value()
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "."
   }
@@ -72,7 +72,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 
 
 #set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "-"
   }
@@ -80,7 +80,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 })
 
 #show normal-figure: set figure(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "-"
   }
@@ -92,7 +92,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
   ..nums,
 ) => {
   let outer-count = outer-figure-counter-value()
-  let heading = display-numbering(heading, ref: ref)
+  let heading = display-numbering(heading, 1, ref: ref)
   if heading != none {
     heading += "."
   }
