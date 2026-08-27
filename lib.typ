@@ -48,6 +48,7 @@
   ))
 }
 
+/// A figure of kind `image`, `table` or `raw` (not a `figure.where(kind: "subfigure")`)
 #let normal-figure = (
   figure
     .where(kind: image)
@@ -70,6 +71,7 @@
   }
 }
 
+/// For non-`figure.where(kind: "subfigure")` (usually `normal-figure`) this applies the second numbering with only one number.
 #let subfigure-numbering(inline-numbering, ref-numbering) = {
   (
     ref: false,

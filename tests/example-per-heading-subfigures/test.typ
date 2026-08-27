@@ -5,10 +5,8 @@
 #show: numera(level: 1)
 #set heading(numbering: "1.1.1")
 
-// TODO FIXME duplication
-#show normal-figure: set figure(numbering: subfigure-numbering("(a)", heading-dependent(1, "1a")))
 // Subfigure numbering: (a) inline, full reference (e.g. 1.1a) in refs
-#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-numbering("(a)", heading-dependent(1, "1a")))
+#show figure: set figure(numbering: subfigure-numbering("(a)", heading-dependent(1, "1a")))
 
 = Subfigures Example
 
