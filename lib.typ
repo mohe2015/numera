@@ -102,8 +102,35 @@
   }
 }
 
-/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`.
+/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. Does NOT add the parent figure number for subfigures!
 #let subfigure-dependent(subfigure-numbering, figure-numbering: none) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    if outer-figure-counter-value() == none {
+      // figure
+      assert(
+        figure-numbering != none,
+        message: "`subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`",
+      )
+      my-numbering(
+        if figure-numbering == auto { subfigure-numbering } else {
+          figure-numbering
+        },
+        ref: ref,
+        ..nums,
+      )
+    } else {
+      // TODO if literal, validate number of theoretically possible inputs?
+      // subfigure
+      my-numbering(subfigure-numbering, ref: ref, ..nums)
+    }
+  }
+}
+
+/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. ADDS the parent figure number for subfigures!
+#let subfigure-counter-dependent(subfigure-numbering, figure-numbering: none) = {
   (
     ref: false,
     ..nums,
