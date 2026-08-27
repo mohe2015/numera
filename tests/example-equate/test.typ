@@ -2,7 +2,7 @@
 #import "@preview/numera:0.0.1": (
   display-numbering, get-numbering, heading-dependent, my-numbering,
   normal-figure, numera, outer-figure-counter-value,
-  subfigure-counter-dependent,
+  subfigure-counter-dependent, concat, non-ref
 )
 
 #let level = 2
@@ -10,7 +10,7 @@
 #show: numera(level: level)
 
 #set heading(numbering: "A.A.A.A")
-#set math.equation(numbering: heading-dependent(level, "1.1"))
+#set math.equation(numbering: concat(non-ref("("), heading-dependent(level, "1.1"), non-ref(")")))
 
 = Test 1
 

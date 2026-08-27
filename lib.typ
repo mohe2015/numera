@@ -173,6 +173,41 @@
   }
 }
 
+#let concat(..numberings) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    numberings.pos().map(numbering => numbering(ref: ref, ..nums)).join()
+  }
+}
+
+#let non-ref(string) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    if ref {
+      ""
+    } else {
+      string
+    }
+  }
+}
+
+#let ref-only(string) = {
+(
+    ref: false,
+    ..nums,
+  ) => {
+    if ref {
+      string
+    } else {
+      ""
+    }
+  }
+}
+
 #let numera(level: 0) = it => {
   show heading: it => {
     if it.level <= level {
