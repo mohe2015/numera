@@ -6,7 +6,7 @@
 )
 
 #let level = 2
-#show: equate
+#show: equate.with(sub-numbering: true, number-mode: "line")
 #show: numera(level: level)
 
 #set heading(numbering: "A.A.A.A")
