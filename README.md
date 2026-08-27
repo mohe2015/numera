@@ -17,6 +17,7 @@ typship login universe # Currently Personal access tokens (classic) required
 
 export TYPST_PACKAGE_PATH=$PWD/packages
 typst-package-check check
+typstyle --inplace .
 typstyle --check .
 tt run
 typship publish universe

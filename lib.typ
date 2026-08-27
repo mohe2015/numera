@@ -36,12 +36,16 @@
   )
 }
 
-#let display-numbering(target, ref: false) = {
+#let display-numbering(target, max-level, ref: false) = {
   let numbering = get-numbering(target, ref: ref)
   if numbering == none {
     return none
   }
-  counter(target).display(numbering)
+  counter(target).display((..nums, ref: ref) => my-numbering(
+    numbering,
+    ..nums.pos().slice(0, calc.min(2, nums.pos().len())),
+    ref: ref,
+  ))
 }
 
 #let normal-figure = (
