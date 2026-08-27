@@ -28,15 +28,6 @@
 
 /// Produces a numbering that trims numbering patterns if `(ref: true)` is passed.
 #let my-numbering(the-numbering, ref: false, ..nums) = {
-  if (type(the-numbering) == str) {
-    assert(
-      count-counting-symbols(the-numbering) >= nums.pos().len(),
-      message: "numbering pattern "
-        + the-numbering
-        + " does not have enough space for "
-        + repr(nums),
-    )
-  }
   numbering(patch-numbering(the-numbering, ref: ref), ..nums)
 }
 
@@ -52,12 +43,12 @@
 
 /// Displays numbering for `target` with truncated counter to `max-level`.
 #let display-numbering(target, max-level, ref: false) = {
-  let numbering = get-numbering(target, ref: ref)
-  if numbering == none or max-level == 0 {
+  let the-numbering = get-numbering(target, ref: ref)
+  if the-numbering == none or max-level == 0 {
     return none
   }
   counter(target).display((..nums, ref: ref) => my-numbering(
-    numbering,
+    the-numbering,
     ..nums.pos().slice(0, calc.min(max-level, nums.pos().len())),
     ref: ref,
   ))
@@ -83,14 +74,14 @@
 )
 
 /// Returns numbering function that concatenates displayed `heading` numbering with truncated counter to `max-level` with `separator` and the passed `numbering`.
-#let heading-dependent(max-level, numbering, separator: ".") = {
+#let heading-dependent(max-level, the-numbering, separator: ".") = {
   (ref: false, ..nums) => {
-    let heading = display-numbering(heading, max-level, ref: ref)
-    if heading != none {
-      heading += separator
+    let the-heading = display-numbering(heading, max-level, ref: ref)
+    if the-heading != none {
+      the-heading += separator
     }
     (
-      heading + my-numbering(numbering, ref: ref, ..nums)
+      the-heading + my-numbering(the-numbering, ref: ref, ..nums)
     )
   }
 }
