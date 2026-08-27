@@ -4,7 +4,14 @@
 #let non-counting = "[^" + counting-symbols + "]"
 #let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
 
+// TODO FIXME make our numbering function not repeat its numberings if there are too many numbers.
+// TODO FIXME pass everything using keys (e.g. parent figure number, subfigure-number etc) and then it is clearer what is meant?
+
 #let trim-numbering(s) = s.match(pattern).captures.at(0)
+
+#let counting-pattern = regex("[" + counting-symbols + "]")
+
+#let count-counting-symbols(s) = s.matches(counting-pattern).len()
 
 #let patch-numbering(the-numbering, ref: false) = {
   if the-numbering == none {
@@ -21,7 +28,10 @@
 }
 
 #let my-numbering(the-numbering, ref: false, ..nums) = {
-  numbering(patch-numbering(the-numbering, ref: ref), ..nums)
+    if (type(the-numbering) == str) {
+      assert(count-counting-symbols(the-numbering) >= nums.pos().len(), message: "numbering pattern " + the-numbering + " does not have enough space for " + repr(nums));
+    }
+    numbering(patch-numbering(the-numbering, ref: ref), ..nums)
 }
 
 #let get-numbering(target, ref: false, location: none) = {
