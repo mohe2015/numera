@@ -28,10 +28,16 @@
 }
 
 #let my-numbering(the-numbering, ref: false, ..nums) = {
-    if (type(the-numbering) == str) {
-      assert(count-counting-symbols(the-numbering) >= nums.pos().len(), message: "numbering pattern " + the-numbering + " does not have enough space for " + repr(nums));
-    }
-    numbering(patch-numbering(the-numbering, ref: ref), ..nums)
+  if (type(the-numbering) == str) {
+    assert(
+      count-counting-symbols(the-numbering) >= nums.pos().len(),
+      message: "numbering pattern "
+        + the-numbering
+        + " does not have enough space for "
+        + repr(nums),
+    )
+  }
+  numbering(patch-numbering(the-numbering, ref: ref), ..nums)
 }
 
 #let get-numbering(target, ref: false, location: none) = {
@@ -79,10 +85,12 @@
 
 #let heading-dependent(max-level, numbering) = {
   (ref: false, ..nums) => {
+    let heading = display-numbering(heading, max-level, ref: ref)
+    if heading != none {
+      heading += "."
+    }
     (
-      display-numbering(heading, max-level, ref: ref)
-        + "."
-        + my-numbering(numbering, ref: ref, ..nums)
+      heading + my-numbering(numbering, ref: ref, ..nums)
     )
   }
 }
@@ -130,7 +138,10 @@
 }
 
 /// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. ADDS the parent figure number for subfigures!
-#let subfigure-counter-dependent(subfigure-numbering, figure-numbering: none) = {
+#let subfigure-counter-dependent(
+  subfigure-numbering,
+  figure-numbering: none,
+) = {
   (
     ref: false,
     ..nums,
@@ -152,7 +163,12 @@
     } else {
       // TODO if literal, validate number of theoretically possible inputs?
       // subfigure
-      my-numbering(subfigure-numbering, ref: ref, ..outer-figure-counter, ..nums)
+      my-numbering(
+        subfigure-numbering,
+        ref: ref,
+        ..outer-figure-counter,
+        ..nums,
+      )
     }
   }
 }
