@@ -55,8 +55,13 @@
     .or(figure.where(kind: raw))
 )
 
+/// Returns the counter of the `normal-figure` containing this `figure.where(kind: "subfigure")` or `none` when applied to the location of a `normal-figure`.
 #let outer-figure-counter-value() = (
-  query(selector(normal-figure).before(here())).last().counter.get()
+  if (query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0) {
+    query(selector(normal-figure).before(here())).last().counter.get()
+  } else {
+    none
+  }
 )
 
 #let heading-dependent(max-level, numbering) = {
