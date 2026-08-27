@@ -9,7 +9,7 @@
 // and then you can combine
 
 // Subfigure numbering: (a) inline, full reference (e.g. 1a) in refs
-#show figure: set figure(numbering: ref-dependent("(a)", subfigure-dependent("1a")))
+#show figure: set figure(numbering: subfigure-dependent("1a"))
 
 = Subfigures Example
 

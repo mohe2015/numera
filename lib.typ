@@ -99,10 +99,8 @@
   ) => {
     let outer-figure-counter = outer-figure-counter-value()
     if outer-figure-counter == none {
-      if (figure-numbering == none) {
-        return none
-      }
       // figure
+      assert(figure-numbering != none, message: "`subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`")
       my-numbering(figure-numbering, ..nums)
     } else {
       // subfigure
