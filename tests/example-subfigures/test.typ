@@ -1,22 +1,11 @@
 #import "@preview/numera:0.0.1": (
-  my-numbering, numera, outer-figure-counter-value,
+  my-numbering, numera, outer-figure-counter-value, subfigure-numbering
 )
 
 #show: numera()
 
 // Subfigure numbering: (a) inline, full reference (e.g. 1a) in refs
-#show figure.where(kind: "subfigure"): set figure(numbering: (
-  ref: false,
-  ..nums,
-) => {
-  if ref {
-    // In references: outer figure number + subfigure letter (e.g. "1a")
-    my-numbering("1a", ..outer-figure-counter-value(), ..nums)
-  } else {
-    // Inline display: just "(a)", "(b)", "(c)"
-    my-numbering("(a)", ..nums)
-  }
-})
+#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-numbering("(a)", "1a"))
 
 = Subfigures Example
 

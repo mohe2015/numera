@@ -59,6 +59,26 @@
   query(selector(normal-figure).before(here())).last().counter.get()
 )
 
+#let heading-dependent(max-level, numbering) = {
+  (ref: false, ..nums) => {
+    display-numbering(heading, max-level, ref: ref) + "." + my-numbering(numbering, ref: ref, ..nums)
+  }
+}
+
+#let subfigure-numbering(inline-numbering, ref-numbering) = {
+  (
+    ref: false,
+    ..nums,
+) => {
+  if ref {
+    my-numbering(ref-numbering, ..outer-figure-counter-value(), ..nums)
+  } else {
+    my-numbering(inline-numbering, ..nums)
+  }
+}
+}
+
+
 #let numera(level: 0) = it => {
   show heading: it => {
     if it.level <= level {
