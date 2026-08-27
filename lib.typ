@@ -208,6 +208,22 @@
   }
 }
 
+#let link-ref(it, counter, render) = {
+  let here = here()
+  let location = it.element.location()
+  assert(
+    here != location,
+    message: "cannot reference an element from its own location",
+  )
+  let rendered = counter.display(render, at: location)
+  let result = if it.element.supplement == [] {
+    rendered
+  } else {
+    [#it.element.supplement~#rendered]
+  }
+  link(location, result)
+}
+
 /// Resets the equation and figure counters at the specified heading level. Level 0 means not resetting at all. Also handles subfigures and ref.
 #let numera(level: 0) = it => {
   show heading: it => {
@@ -233,50 +249,31 @@
   // imitates default show rule but passes (ref: true) to numbering
   show ref: it => {
     if it.element == none or it.element.func() != math.equation { return it }
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = counter(math.equation).display(
-      patch-numbering(it.element.numbering, ref: true),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, counter(math.equation), patch-numbering(
+      it.element.numbering,
+      ref: true,
+    ))
   }
 
   // imitates default show rule but passes (ref: true) to numbering
   show ref: it => {
     if it.element == none or it.element.func() != figure { return it }
     if it.element.kind not in (image, table, raw, "subfigure") { return it }
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = it.element.counter.display(
-      patch-numbering(it.element.numbering, ref: true),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, it.element.counter, patch-numbering(
+      it.element.numbering,
+      ref: true,
+    ))
   }
 
   // equate compatibility for (ref: true) and correct location context
   // TODO upstream the display(at: ) as that should already fix quite a bit.
   // or rather try refactoring upstream so the numbering function can retrieve this value.
   show ref: it => {
-    if it.element == none { return it }
-    if it.element.func() != figure { return it }
+    if it.element == none or it.element.func() != figure { return it }
     if it.element.kind != math.equation { return it }
-    if it.element.body == none { return it }
-    if it.element.body.func() != metadata { return it }
-
+    if it.element.body == none or it.element.body.func() != metadata {
+      return it
+    }
     let nums = if equate-sub-numbering-state.at(it.element.location()) {
       it.element.body.value
     } else {
@@ -286,28 +283,14 @@
           - 1,
       )
     }
-
     assert(
       it.element.numbering != none,
       message: "cannot reference equation without numbering.",
     )
-
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = it.element.counter.display(
-      (..) => numbering(
-        patch-numbering(it.element.numbering, ref: true),
-        ..nums,
-      ),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, it.element.counter, (..) => numbering(
+      patch-numbering(it.element.numbering, ref: true),
+      ..nums,
+    ))
   }
 
   it
