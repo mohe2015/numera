@@ -1,3 +1,5 @@
+/// A numbering function is anything `(ref: false, ..nums) => string` where `ref` is false when the numbering is called from the element itself and true if it is called from a ref.
+
 #let equate-sub-numbering-state = state("equate/sub-numbering", false)
 
 #let counting-symbols = "1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵"
