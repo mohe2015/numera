@@ -9,7 +9,8 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
-
+    env:
+      TYPST_PACKAGE_PATH: packages
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
