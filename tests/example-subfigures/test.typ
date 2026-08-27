@@ -1,7 +1,5 @@
 #import "@preview/numera:0.0.1": (
-  numera,
-  outer-figure-counter-value,
-  my-numbering,
+  my-numbering, numera, outer-figure-counter-value,
 )
 
 #show: numera()
@@ -31,19 +29,31 @@ This example demonstrates side-by-side subfigures using a grid layout.
     gutter: 1.5em,
     align: center,
     [
-      #figure("Sub-figure A", caption: "First sub-figure", kind: "subfigure") <sub-a>
+      #figure(
+        "Sub-figure A",
+        caption: "First sub-figure",
+        kind: "subfigure",
+      ) <sub-a>
     ],
     [
-      #figure("Sub-figure B", caption: "Second sub-figure", kind: "subfigure") <sub-b>
+      #figure(
+        "Sub-figure B",
+        caption: "Second sub-figure",
+        kind: "subfigure",
+      ) <sub-b>
     ],
     [
-      #figure("Sub-figure C", caption: "Third sub-figure", kind: "subfigure") <sub-c>
+      #figure(
+        "Sub-figure C",
+        caption: "Third sub-figure",
+        kind: "subfigure",
+      ) <sub-c>
     ],
   ),
   caption: "Three sub-figures arranged in a grid",
 ) <fig-grid>
 
-@sub-a, @sub-b, @sub-c and the parent @fig-grid. 
+@sub-a, @sub-b, @sub-c and the parent @fig-grid.
 
 #figure(
   grid(

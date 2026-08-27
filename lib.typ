@@ -41,7 +41,11 @@
   if numbering == none {
     return none
   }
-  counter(target).display((..nums, ref: ref) => my-numbering(numbering, ..nums.pos().slice(0, calc.min(2, nums.pos().len())), ref: ref))
+  counter(target).display((..nums, ref: ref) => my-numbering(
+    numbering,
+    ..nums.pos().slice(0, calc.min(2, nums.pos().len())),
+    ref: ref,
+  ))
 }
 
 #let normal-figure = (
