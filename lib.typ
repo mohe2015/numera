@@ -85,9 +85,9 @@
     ..nums,
   ) => {
     if ref {
-      my-numbering(ref-numbering, ..nums)
+      my-numbering(ref-numbering, ref: ref, ..nums)
     } else {
-      my-numbering(inline-numbering, ..nums)
+      my-numbering(inline-numbering, ref: ref, ..nums)
     }
   }
 }
@@ -109,11 +109,13 @@
         if figure-numbering == auto { subfigure-numbering } else {
           figure-numbering
         },
+        ref: ref,
         ..nums,
       )
     } else {
+      // TODO if literal, validate number of theoretically possible inputs?
       // subfigure
-      my-numbering(subfigure-numbering, ..outer-figure-counter, ..nums)
+      my-numbering(subfigure-numbering, ref: ref, ..outer-figure-counter, ..nums)
     }
   }
 }

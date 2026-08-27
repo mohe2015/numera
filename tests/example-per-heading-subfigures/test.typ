@@ -7,10 +7,9 @@
 #set heading(numbering: "1.1.1")
 
 // Subfigure numbering: (a) inline, full reference (e.g. 1.1a) in refs
-#show figure: set figure(numbering: ref-dependent(
-  "(a)",
-  heading-dependent(1, subfigure-dependent("1a", figure-numbering: auto)),
-))
+#show figure: set figure(numbering: 
+  subfigure-dependent(ref-dependent("(a)", heading-dependent(1, "1a")), figure-numbering: "1"),
+)
 
 = Subfigures Example
 
