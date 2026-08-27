@@ -1,8 +1,8 @@
 #import "@preview/equate:0.3.3": equate
 #import "@preview/numera:0.0.1": (
-  display-numbering, get-numbering, heading-dependent, my-numbering,
-  normal-figure, numera, outer-figure-counter-value,
-  subfigure-counter-dependent, concat, non-ref
+  concat, display-numbering, get-numbering, heading-dependent, my-numbering,
+  non-ref, normal-figure, numera, outer-figure-counter-value,
+  subfigure-counter-dependent,
 )
 
 #let level = 2
@@ -10,7 +10,11 @@
 #show: numera(level: level)
 
 #set heading(numbering: "A.A.A.A")
-#set math.equation(numbering: concat(non-ref("("), heading-dependent(level, "1.1"), non-ref(")")))
+#set math.equation(numbering: concat(
+  non-ref("("),
+  heading-dependent(level, "1.1"),
+  non-ref(")"),
+))
 
 = Test 1
 

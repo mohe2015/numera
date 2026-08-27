@@ -196,7 +196,7 @@
 }
 
 #let ref-only(string) = {
-(
+  (
     ref: false,
     ..nums,
   ) => {
