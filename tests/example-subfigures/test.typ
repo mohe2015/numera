@@ -11,8 +11,7 @@
 ) => {
   if ref {
     // In references: outer figure number + subfigure letter (e.g. "1a")
-    let outer-count = outer-figure-counter-value()
-    my-numbering("1a", ..outer-count, ..nums)
+    my-numbering("1a", ..outer-figure-counter-value(), ..nums)
   } else {
     // Inline display: just "(a)", "(b)", "(c)"
     my-numbering("(a)", ..nums)
