@@ -92,6 +92,7 @@
   }
 }
 
+/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`.
 #let subfigure-dependent(subfigure-numbering, figure-numbering: none) = {
   (
     ref: false,
@@ -100,8 +101,16 @@
     let outer-figure-counter = outer-figure-counter-value()
     if outer-figure-counter == none {
       // figure
-      assert(figure-numbering != none, message: "`subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`")
-      my-numbering(figure-numbering, ..nums)
+      assert(
+        figure-numbering != none,
+        message: "`subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`",
+      )
+      my-numbering(
+        if figure-numbering == auto { subfigure-numbering } else {
+          figure-numbering
+        },
+        ..nums,
+      )
     } else {
       // subfigure
       my-numbering(subfigure-numbering, ..outer-figure-counter, ..nums)
