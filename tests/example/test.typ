@@ -1,41 +1,18 @@
 #import "@preview/numera:0.0.1": (
   display-numbering, get-numbering, my-numbering, normal-figure, numera,
-  outer-figure-counter-value,
+  outer-figure-counter-value, heading-dependent, subfigure-counter-dependent
 )
 
 #show: numera(level: 1)
 
-#set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(1)", ref: ref, ..nums)
-})
-
-#show normal-figure: set figure(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(1)", ref: ref, ..nums)
-})
+#set math.equation(numbering: heading-dependent(1, "(1)"))
+#show normal-figure: set figure(numbering: heading-dependent(1, "(1)"))
 
 = Test 1
 
 $ 1 + 1 $ <eq1-1>
 
-#show figure.where(kind: "subfigure"): set figure(numbering: (
-  ref: false,
-  ..nums,
-) => {
-  let outer-count = outer-figure-counter-value()
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(S1a)", ref: ref, ..outer-count, ..nums)
-})
+#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(1, subfigure-counter-dependent("(S1a)")))
 
 #figure(
   [
@@ -68,34 +45,9 @@ See @eq1-1, @eq1-2, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
 
-
-#set math.equation(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "-"
-  }
-  heading + my-numbering("(1)", ref: ref, ..nums)
-})
-
-#show normal-figure: set figure(numbering: (ref: false, ..nums) => {
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "-"
-  }
-  heading + my-numbering("(1)", ref: ref, ..nums)
-})
-
-#show figure.where(kind: "subfigure"): set figure(numbering: (
-  ref: false,
-  ..nums,
-) => {
-  let outer-count = outer-figure-counter-value()
-  let heading = display-numbering(heading, 1, ref: ref)
-  if heading != none {
-    heading += "."
-  }
-  heading + my-numbering("(X1a)", ref: ref, ..outer-count, ..nums)
-})
+#set math.equation(numbering: heading-dependent(1, "(1)", separator: "-"))
+#show normal-figure: set figure(numbering: heading-dependent(1, "(1)", separator: "-"))
+#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(1, subfigure-counter-dependent("(X1a)")))
 
 #set math.equation(supplement: "Eq")
 #set figure(supplement: "Fig")

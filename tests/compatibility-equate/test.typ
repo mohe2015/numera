@@ -8,7 +8,6 @@
 #show: numera(level: 1)
 
 #set math.equation(numbering: heading-dependent(1, "(1.1)"))
-
 #show normal-figure: set figure(numbering: heading-dependent(1, "(1)"))
 
 = Test 1
