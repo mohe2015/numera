@@ -1,18 +1,19 @@
+/// A numbering function is anything `(ref: false, ..nums) => string` where `ref` is false when the numbering is called from the element itself and true if it is called from a ref.
+
 #let equate-sub-numbering-state = state("equate/sub-numbering", false)
 
 #let counting-symbols = "1aAiIαΑ一壹あいアイא가ㄱ*١۱१১ক①⓵"
 #let non-counting = "[^" + counting-symbols + "]"
 #let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
 
-// TODO FIXME make our numbering function not repeat its numberings if there are too many numbers.
-// TODO FIXME pass everything using keys (e.g. parent figure number, subfigure-number etc) and then it is clearer what is meant?
-
 #let trim-numbering(s) = s.match(pattern).captures.at(0)
 
 #let counting-pattern = regex("[" + counting-symbols + "]")
 
+/// Returns the number of counting symbols in the provided numbering pattern
 #let count-counting-symbols(s) = s.matches(counting-pattern).len()
 
+/// Produces a numbering pattern/function that trims numbering patterns if `(ref: true)` is passed.
 #let patch-numbering(the-numbering, ref: false) = {
   if the-numbering == none {
     none
@@ -27,39 +28,30 @@
   }
 }
 
+/// Produces a numbering that trims numbering patterns if `(ref: true)` is passed.
 #let my-numbering(the-numbering, ref: false, ..nums) = {
-  if (type(the-numbering) == str) {
-    assert(
-      count-counting-symbols(the-numbering) >= nums.pos().len(),
-      message: "numbering pattern "
-        + the-numbering
-        + " does not have enough space for "
-        + repr(nums),
-    )
-  }
   numbering(patch-numbering(the-numbering, ref: ref), ..nums)
 }
 
-#let get-numbering(target, ref: false, location: none) = {
-  if location == none {
-    location = here()
-  }
+/// Gets numbering pattern/function for `target` element type at `here()`
+#let get-numbering(target, ref: false) = {
   patch-numbering(
-    query(selector(target).before(location))
+    query(selector(target).before(here()))
       .last(default: (numbering: none))
       .numbering,
     ref: ref,
   )
 }
 
+/// Displays numbering for `target` with truncated counter to `max-level`.
 #let display-numbering(target, max-level, ref: false) = {
-  let numbering = get-numbering(target, ref: ref)
-  if numbering == none {
+  let the-numbering = get-numbering(target, ref: ref)
+  if the-numbering == none or max-level == 0 {
     return none
   }
   counter(target).display((..nums, ref: ref) => my-numbering(
-    numbering,
-    ..nums.pos().slice(0, calc.min(2, nums.pos().len())),
+    the-numbering,
+    ..nums.pos().slice(0, calc.min(max-level, nums.pos().len())),
     ref: ref,
   ))
 }
@@ -83,20 +75,20 @@
   }
 )
 
-#let heading-dependent(max-level, numbering, separator: ".") = {
+/// Returns numbering function that concatenates displayed `heading` numbering with truncated counter to `max-level` with `separator` and the passed `numbering`.
+#let heading-dependent(max-level, the-numbering, separator: ".") = {
   (ref: false, ..nums) => {
-    let heading = display-numbering(heading, max-level, ref: ref)
-    if heading != none {
-      heading += separator
+    let the-heading = display-numbering(heading, max-level, ref: ref)
+    if the-heading != none {
+      the-heading += separator
     }
     (
-      heading + my-numbering(numbering, ref: ref, ..nums)
+      the-heading + my-numbering(the-numbering, ref: ref, ..nums)
     )
   }
 }
 
-// For non-`figure.where(kind: "subfigure")` (usually `normal-figure`) this applies the second numbering with only one number.
-
+/// Returns a numbering function that uses the first numbering for non-`ref` numberings and the second numbering for `ref` numberings.
 #let ref-dependent(inline-numbering, ref-numbering) = {
   (
     ref: false,
@@ -110,7 +102,7 @@
   }
 }
 
-/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. Does NOT add the parent figure number for subfigures!
+/// Returns a numbering function that uses the first numbering for `figure.where(kind: "subfigure")` and, if provided, the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. Does NOT add the parent figure number for subfigures!
 #let subfigure-dependent(subfigure-numbering, figure-numbering: none) = {
   (
     ref: false,
@@ -130,14 +122,13 @@
         ..nums,
       )
     } else {
-      // TODO if literal, validate number of theoretically possible inputs?
       // subfigure
       my-numbering(subfigure-numbering, ref: ref, ..nums)
     }
   }
 }
 
-/// Uses the first numbering for `figure.where(kind: "subfigure")` and if provided the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. ADDS the parent figure number for subfigures!
+/// Returns a numbering function that uses the first numbering for `figure.where(kind: "subfigure")` and, if provided, the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. ADDS the parent figure number for subfigures!
 #let subfigure-counter-dependent(
   subfigure-numbering,
   figure-numbering: none,
@@ -161,7 +152,6 @@
         ..nums,
       )
     } else {
-      // TODO if literal, validate number of theoretically possible inputs?
       // subfigure
       my-numbering(
         subfigure-numbering,
@@ -173,6 +163,61 @@
   }
 }
 
+/// Returns a numbering function that concatenates the passed numbering patterns/functions
+#let concat(..numberings) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    numberings.pos().map(numbering-fn => numbering-fn(ref: ref, ..nums)).join()
+  }
+}
+
+/// Returns a numbering function that produces the provided string for non-`ref` uses and an empty string otherwise.
+#let non-ref(string) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    if ref {
+      ""
+    } else {
+      string
+    }
+  }
+}
+
+/// Returns a numbering function that produces the provided string for `ref` uses and an empty string otherwise.
+#let ref-only(string) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    if ref {
+      string
+    } else {
+      ""
+    }
+  }
+}
+
+#let link-ref(it, counter, render) = {
+  let here = here()
+  let location = it.element.location()
+  assert(
+    here != location,
+    message: "cannot reference an element from its own location",
+  )
+  let rendered = counter.display(render, at: location)
+  let result = if it.element.supplement == [] {
+    rendered
+  } else {
+    [#it.element.supplement~#rendered]
+  }
+  link(location, result)
+}
+
+/// Resets the equation and figure counters at the specified heading level. Level 0 means not resetting at all. Also handles subfigures and ref.
 #let numera(level: 0) = it => {
   show heading: it => {
     if it.level <= level {
@@ -197,50 +242,31 @@
   // imitates default show rule but passes (ref: true) to numbering
   show ref: it => {
     if it.element == none or it.element.func() != math.equation { return it }
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = counter(math.equation).display(
-      patch-numbering(it.element.numbering, ref: true),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, counter(math.equation), patch-numbering(
+      it.element.numbering,
+      ref: true,
+    ))
   }
 
   // imitates default show rule but passes (ref: true) to numbering
   show ref: it => {
     if it.element == none or it.element.func() != figure { return it }
     if it.element.kind not in (image, table, raw, "subfigure") { return it }
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = it.element.counter.display(
-      patch-numbering(it.element.numbering, ref: true),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, it.element.counter, patch-numbering(
+      it.element.numbering,
+      ref: true,
+    ))
   }
 
   // equate compatibility for (ref: true) and correct location context
   // TODO upstream the display(at: ) as that should already fix quite a bit.
   // or rather try refactoring upstream so the numbering function can retrieve this value.
   show ref: it => {
-    if it.element == none { return it }
-    if it.element.func() != figure { return it }
+    if it.element == none or it.element.func() != figure { return it }
     if it.element.kind != math.equation { return it }
-    if it.element.body == none { return it }
-    if it.element.body.func() != metadata { return it }
-
+    if it.element.body == none or it.element.body.func() != metadata {
+      return it
+    }
     let nums = if equate-sub-numbering-state.at(it.element.location()) {
       it.element.body.value
     } else {
@@ -250,28 +276,14 @@
           - 1,
       )
     }
-
     assert(
       it.element.numbering != none,
       message: "cannot reference equation without numbering.",
     )
-
-    let here = here()
-    let location = it.element.location()
-    assert(here != location)
-    let rendered = it.element.counter.display(
-      (..) => numbering(
-        patch-numbering(it.element.numbering, ref: true),
-        ..nums,
-      ),
-      at: location,
-    )
-    let result = if it.element.supplement == [] {
-      rendered
-    } else {
-      [#it.element.supplement~#rendered]
-    }
-    link(location, result)
+    link-ref(it, it.element.counter, (..) => numbering(
+      patch-numbering(it.element.numbering, ref: true),
+      ..nums,
+    ))
   }
 
   it
