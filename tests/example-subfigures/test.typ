@@ -1,16 +1,15 @@
 #import "@preview/numera:0.0.1": (
   my-numbering, numera, outer-figure-counter-value, ref-dependent,
-  subfigure-dependent, subfigure-counter-dependent
+  subfigure-counter-dependent, subfigure-dependent,
 )
 
 #show: numera()
 
 // Figure numbering: 1 inline, 1.1 in refs
 // Subfigure numbering: (a) inline, full reference (e.g. 1.1a) in refs
-#show figure: set figure(numbering: 
-  ref-dependent(
-    subfigure-dependent("(a)", figure-numbering: "1"),
-    subfigure-counter-dependent("1a", figure-numbering: auto)
+#show figure: set figure(numbering: ref-dependent(
+  subfigure-dependent("(a)", figure-numbering: "1"),
+  subfigure-counter-dependent("1a", figure-numbering: auto),
 ))
 
 = Subfigures Example

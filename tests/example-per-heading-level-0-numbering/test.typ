@@ -3,10 +3,11 @@
   normal-figure, numera, outer-figure-counter-value,
 )
 
-#show: numera(level: 0)
+#let level = 0
+#show: numera(level: level)
 #set heading(numbering: "1.1.1")
 
-#set math.equation(numbering: heading-dependent(0, "1"))
+#set math.equation(numbering: heading-dependent(level, "1"))
 
 = Chapter 1
 $ E = m c^2 $ <eq1>
