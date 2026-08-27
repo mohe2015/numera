@@ -4,19 +4,20 @@
   normal-figure, numera, outer-figure-counter-value, subfigure-counter-dependent
 )
 
+#let level = 1
 #show: equate.with(sub-numbering: true, number-mode: "line")
-#show: numera(level: 1)
+#show: numera(level: level)
 
-#set math.equation(numbering: heading-dependent(1, "(1.1)"))
-#show normal-figure: set figure(numbering: heading-dependent(1, "(1)"))
+#set math.equation(numbering: heading-dependent(level, "(1.1)"))
+#show normal-figure: set figure(numbering: heading-dependent(level, "(1)"))
 
 = Test 1
 
 $ 1 + 1 $ <eq1-1>
 
-#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(1, subfigure-counter-dependent("(S1a)")))
+#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(level, subfigure-counter-dependent("(S1a)")))
 // or
-//#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-counter-dependent(heading-dependent(1, "(S1a)")))
+//#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-counter-dependent(heading-dependent(level, "(S1a)")))
 
 #figure(
   [
@@ -49,9 +50,9 @@ See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @e
 
 See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig4-1, @s4-1-a, @s4-1-b, @fig4-2
 
-#set math.equation(numbering: heading-dependent(1, "(1.1)", separator: "-"))
-#show normal-figure: set figure(numbering: heading-dependent(1, "(1)", separator: "-"))
-#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(1, subfigure-counter-dependent("(X1a)")))
+#set math.equation(numbering: heading-dependent(level, "(1.1)", separator: "-"))
+#show normal-figure: set figure(numbering: heading-dependent(level, "(1)", separator: "-"))
+#show figure.where(kind: "subfigure"): set figure(numbering: heading-dependent(level, subfigure-counter-dependent("(X1a)")))
 
 #set math.equation(supplement: "Eq")
 #set figure(supplement: "Fig")

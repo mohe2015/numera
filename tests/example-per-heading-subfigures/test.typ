@@ -4,14 +4,15 @@
   subfigure-dependent,
 )
 
-#show: numera(level: 1)
+#let level = 1
+#show: numera(level: level)
 #set heading(numbering: "1.1.1")
 
 // Figure numbering: 1 inline, 1.1 in refs
 // Subfigure numbering: (a) inline, full reference (e.g. 1.1a) in refs
 #show figure: set figure(numbering: ref-dependent(
   subfigure-dependent("(a)", figure-numbering: "1"),
-  heading-dependent(1, subfigure-counter-dependent(
+  heading-dependent(level, subfigure-counter-dependent(
     "1a",
     figure-numbering: auto,
   )),
