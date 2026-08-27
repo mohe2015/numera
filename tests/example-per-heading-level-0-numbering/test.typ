@@ -1,15 +1,12 @@
 #import "@preview/numera:0.0.1": (
   display-numbering, get-numbering, my-numbering, normal-figure, numera,
-  outer-figure-counter-value,
+  outer-figure-counter-value, heading-dependent
 )
 
 #show: numera(level: 0)
 #set heading(numbering: "1.1.1")
 
-#set math.equation(numbering: (ref: false, ..nums) => {
-  display-numbering(heading, 0, ref: ref) + "." + my-numbering("1", ref: ref, ..nums)
-})
-
+#set math.equation(numbering: heading-dependent(0, "1"))
 
 = Chapter 1
 $ E = m c^2 $ <eq1>

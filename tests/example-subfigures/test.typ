@@ -5,7 +5,7 @@
 #show: numera()
 
 // Subfigure numbering: (a) inline, full reference (e.g. 1a) in refs
-#show figure.where(kind: "subfigure"): set figure(numbering: subfigure-numbering("(a)", "1a"))
+#show figure: set figure(numbering: subfigure-numbering("(a)", "1a"))
 
 = Subfigures Example
 
