@@ -1,6 +1,6 @@
 #import "@preview/numera:0.0.1": (
-  display-numbering, get-numbering, my-numbering, normal-figure, numera,
-  outer-figure-counter-value, heading-dependent
+  display-numbering, get-numbering, heading-dependent, my-numbering,
+  normal-figure, numera, outer-figure-counter-value,
 )
 
 #show: numera(level: 1)

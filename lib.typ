@@ -58,7 +58,9 @@
 
 /// Returns the counter of the `normal-figure` containing this `figure.where(kind: "subfigure")` or `none` when applied to the location of a `normal-figure`.
 #let outer-figure-counter-value() = (
-  if (query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0) {
+  if (
+    query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0
+  ) {
     query(selector(normal-figure).before(here())).last().counter.get()
   } else {
     none
@@ -67,24 +69,47 @@
 
 #let heading-dependent(max-level, numbering) = {
   (ref: false, ..nums) => {
-    display-numbering(heading, max-level, ref: ref) + "." + my-numbering(numbering, ref: ref, ..nums)
+    (
+      display-numbering(heading, max-level, ref: ref)
+        + "."
+        + my-numbering(numbering, ref: ref, ..nums)
+    )
   }
 }
 
-/// For non-`figure.where(kind: "subfigure")` (usually `normal-figure`) this applies the second numbering with only one number.
-#let subfigure-numbering(inline-numbering, ref-numbering) = {
+// For non-`figure.where(kind: "subfigure")` (usually `normal-figure`) this applies the second numbering with only one number.
+
+#let ref-dependent(inline-numbering, ref-numbering) = {
   (
     ref: false,
     ..nums,
-) => {
-  if ref {
-    my-numbering(ref-numbering, ..outer-figure-counter-value(), ..nums)
-  } else {
-    my-numbering(inline-numbering, ..nums)
+  ) => {
+    if ref {
+      my-numbering(ref-numbering, ..nums)
+    } else {
+      my-numbering(inline-numbering, ..nums)
+    }
   }
 }
-}
 
+#let subfigure-dependent(subfigure-numbering, figure-numbering: none) = {
+  (
+    ref: false,
+    ..nums,
+  ) => {
+    let outer-figure-counter = outer-figure-counter-value()
+    if outer-figure-counter == none {
+      if (figure-numbering == none) {
+        return none
+      }
+      // figure
+      my-numbering(figure-numbering, ..nums)
+    } else {
+      // subfigure
+      my-numbering(subfigure-numbering, ..outer-figure-counter, ..nums)
+    }
+  }
+}
 
 #let numera(level: 0) = it => {
   show heading: it => {
