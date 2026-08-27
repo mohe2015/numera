@@ -54,12 +54,12 @@
 
 #let display-numbering(target, max-level, ref: false) = {
   let numbering = get-numbering(target, ref: ref)
-  if numbering == none {
+  if numbering == none or max-level == 0 {
     return none
   }
   counter(target).display((..nums, ref: ref) => my-numbering(
     numbering,
-    ..nums.pos().slice(0, calc.min(2, nums.pos().len())),
+    ..nums.pos().slice(0, calc.min(max-level, nums.pos().len())),
     ref: ref,
   ))
 }

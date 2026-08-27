@@ -5,23 +5,21 @@
   subfigure-counter-dependent,
 )
 
-#let level = 1
+#let level = 2
 #show: equate.with(sub-numbering: true, number-mode: "line")
 #show: numera(level: level)
 
-#set heading(numbering: "1.1.1.1")
+#set heading(numbering: "A.A.A.A")
 #set math.equation(numbering: heading-dependent(level, "1.1"))
 
 = Test 1
 
 $ 1 + 1 $ <eq1-1>
 
-
 == Subtitle
 $ 1 + 1 #<eq1-2a> \ 2 + 2 #<eq1-2b> $ <eq1-2>
 
 See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2, @eq4-2a, @eq4-2b
-
 
 = Appendix
 
@@ -30,7 +28,6 @@ $ 1 + 1 $ <eq2-2>
 
 See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2, @eq4-2a, @eq4-2b
 
-
 = Test 1
 
 $ 1 + 1 \ 2 + 2 $ <eq3-1>
@@ -38,8 +35,7 @@ $ 1 + 1 $ <eq3-2>
 
 See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2, @eq4-2a, @eq4-2b
 
-
-#set heading(numbering: "[I.I]")
+#set heading(numbering: "I.I.I.I")
 
 = Appendix
 
@@ -49,4 +45,3 @@ $ 1 + 1 $ <eq4-1>
 $ 1 + 1 #<eq4-2a> \ 2 + 2 #<eq4-2b> $ <eq4-2>
 
 See @eq1-1, @eq1-2, @eq1-2a, @eq1-2b, @eq2-1, @eq2-2, @eq3-1, @eq3-2, @eq4-1, @eq4-2, @eq4-2a, @eq4-2b
-
