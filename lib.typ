@@ -83,11 +83,11 @@
   }
 )
 
-#let heading-dependent(max-level, numbering) = {
+#let heading-dependent(max-level, numbering, separator: ".") = {
   (ref: false, ..nums) => {
     let heading = display-numbering(heading, max-level, ref: ref)
     if heading != none {
-      heading += "."
+      heading += separator
     }
     (
       heading + my-numbering(numbering, ref: ref, ..nums)
