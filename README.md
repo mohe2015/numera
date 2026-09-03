@@ -22,3 +22,28 @@ typstyle --check .
 tt run
 typship publish universe
 ```
+
+## AI setup
+
+```
+https://llama.app/
+curl -LsSf https://llama.app/install.sh | sh
+llama serve -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M -c 0 --reasoning-preserve
+
+[agents]
+recent = "agent"
+
+[models]
+recent = "llamacpp:qwen3.8-27b"
+
+[models.providers.llamacpp]
+display_name = "llama.cpp"
+base_url = "http://127.0.0.1:8080"
+class_path = "langchain_openai.chat_models.base:ChatOpenAI"
+api_key = "empty"
+
+[models.providers.llamacpp.params]
+stream_chunk_timeout = 3600
+
+OPENAI_API_KEY=empty dcode
+```
