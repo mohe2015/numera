@@ -1,10 +1,10 @@
-#import "@preview/numera:0.0.1": (
+#import "@preview/numera:0.1.0": (
   concat, count-counting-symbols, display-numbering, get-numbering,
   heading-dependent, my-numbering, non-ref, normal-figure, numera,
   outer-figure-counter-value, patch-numbering, ref-dependent, ref-only,
   subfigure-counter-dependent, subfigure-dependent, trim-numbering,
 )
-#import "@preview/numera:0.0.1" as api
+#import "@preview/numera:0.1.0" as api
 
 // The entrypoint exposes the supported API without leaking implementation state
 // or regex details.

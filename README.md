@@ -9,7 +9,7 @@ Requires Typst 0.15.0 or newer.
 Import `numera`, apply its show rule, and use `heading-dependent` wherever a counter should include the current heading:
 
 ```typst
-#import "@preview/numera:0.0.1": heading-dependent, normal-figure, numera
+#import "@preview/numera:0.1.0": heading-dependent, normal-figure, numera
 
 #let level = 1
 #show: numera(level: level)
@@ -39,7 +39,7 @@ For all available functions and parameters, build the API reference in [`docs.ty
 typst compile --package-path "$PWD/packages" docs.typ
 ```
 
-Building the reference also runs its documentation tests and checks that every parameter is documented. CI builds it as part of the test suite. Like the examples, `docs.typ` uses the normal `@preview/numera:0.0.1` import, so you can build it against either the published release or your local checkout.
+Building the reference also runs its documentation tests and checks that every parameter is documented. CI builds it as part of the test suite. Like the examples, `docs.typ` uses the normal `@preview/numera:0.1.0` import, so you can build it against either the published release or your local checkout.
 
 | Function | Purpose |
 | --- | --- |
@@ -55,7 +55,7 @@ Building the reference also runs its documentation tests and checks that every p
 For example, this renders equation numbers with parentheses on the equation but without them in references:
 
 ```typst
-#import "@preview/numera:0.0.1": concat, heading-dependent, non-ref, numera
+#import "@preview/numera:0.1.0": concat, heading-dependent, non-ref, numera
 
 #show: numera(level: 1)
 #set heading(numbering: "1")
@@ -93,7 +93,7 @@ cargo install --git https://github.com/sjfhsjfh/typship.git
 Every example and test imports Numera the same way a user does:
 
 ```typst
-#import "@preview/numera:0.0.1"
+#import "@preview/numera:0.1.0"
 ```
 
 This is intentional. The examples remain copyable, while package resolution lets the same files exercise either the published release or the current checkout. A relative import would always select the checkout, while an `@local` import would test a different namespace from the one users install.
@@ -110,7 +110,7 @@ The equivalent environment-variable form is handy when several commands should u
 TYPST_PACKAGE_PATH="$PWD/packages" tt run
 ```
 
-To run the current test suite against the published `0.0.1` release, make sure no local override is active:
+To run the current test suite against the published `0.1.0` release, make sure no local override is active:
 
 ```bash
 env -u TYPST_PACKAGE_PATH tt run

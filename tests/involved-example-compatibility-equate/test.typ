@@ -1,5 +1,5 @@
 #import "@preview/equate:0.3.3": equate
-#import "@preview/numera:0.0.1": (
+#import "@preview/numera:0.1.0": (
   display-numbering, get-numbering, heading-dependent, my-numbering,
   normal-figure, numera, outer-figure-counter-value,
   subfigure-counter-dependent,
