@@ -2,6 +2,64 @@
 
 Per-chapter figure and equation numbering, subfigure numbering, numbering functions that can render differently for references, equate package compatibility.
 
+Requires Typst 0.15.0 or newer.
+
+## Quick start
+
+Import `numera`, apply it as a show rule, and use `heading-dependent` for the elements whose counters should include the current heading:
+
+```typst
+#import "@preview/numera:0.0.1": heading-dependent, normal-figure, numera
+
+#let level = 1
+#show: numera(level: level)
+
+#set heading(numbering: "1.1")
+#set math.equation(numbering: heading-dependent(level, "1"))
+#show normal-figure: set figure(numbering: heading-dependent(level, "1"))
+
+= Introduction
+
+$ E = m c^2 $ <energy>
+
+#figure([A result], caption: [A numbered figure]) <result>
+
+See @energy and @result.
+```
+
+With `level: 1`, the equation and figure counters reset independently at each level-one heading and use heading-prefixed numbers such as `1.1` and `1.2`. Use `level: 0` for document-wide counters without a heading prefix.
+
+## API overview
+
+Numera numbering functions accept a named `ref` argument internally. It is `false` while rendering the numbered element and `true` while rendering a reference, which makes inline and reference forms independently composable.
+
+| Function | Purpose |
+| --- | --- |
+| `numera(level: 0)` | Installs the counter resets, subfigure handling, and reference rendering. Apply it with `#show: numera(level: ...)`. |
+| `heading-dependent(max-level, numbering, separator: ".")` | Prefixes a numbering with the current heading counter, truncated to `max-level`. |
+| `ref-dependent(inline-numbering, ref-numbering)` | Uses one numbering on the element and another in references. |
+| `subfigure-dependent(subfigure-numbering, figure-numbering: none)` | Selects numbering for subfigures and, optionally, normal figures. It does not add the parent figure number. |
+| `subfigure-counter-dependent(subfigure-numbering, figure-numbering: none)` | Selects figure or subfigure numbering and prepends the parent figure counter to subfigures. Pass `figure-numbering: auto` to reuse the subfigure pattern for normal figures. |
+| `concat(..numberings)` | Concatenates multiple Numera numbering functions into one numbering. |
+| `non-ref(text)` | Emits `text` on the numbered element and nothing in references. Useful for inline-only punctuation. |
+| `ref-only(text)` | Emits `text` only in references. |
+
+For example, this renders equation numbers with parentheses on the equation but without them in references:
+
+```typst
+#import "@preview/numera:0.0.1": concat, heading-dependent, non-ref, numera
+
+#show: numera(level: 1)
+#set heading(numbering: "1")
+#set math.equation(numbering: concat(
+  non-ref("("),
+  heading-dependent(1, "1"),
+  non-ref(")"),
+))
+```
+
+## Examples
+
 See these examples for usage:
 
 - [Equate](https://github.com/mohe2015/numera/blob/main/tests/example-equate/test.typ)
