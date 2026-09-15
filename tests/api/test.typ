@@ -56,7 +56,14 @@
 
 // A subfigure-only numbering without a normal-figure fallback must reject use
 // outside a subfigure.
+#figure(``` test```)
 #context {
-  assert-panic(() => subfigure-dependent("(a)")(1))
-  assert-panic(() => subfigure-counter-dependent("(1a)")(1))
+  assert.eq(
+    catch(() => subfigure-dependent("(a)")(1)),
+    "assertion failed: `subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`",
+  )
+  assert.eq(
+    catch(() => subfigure-counter-dependent("(1a)")(1)),
+    "assertion failed: `subfigure-counter-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-counter-dependent`",
+  )
 }

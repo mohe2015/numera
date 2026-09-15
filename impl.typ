@@ -134,7 +134,7 @@
 /// -> none | array
 #let outer-figure-counter-value() = (
   if (
-    query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0
+    query(selector(figure).before(here())).last().kind == "subfigure"
   ) {
     query(selector(normal-figure).before(here())).last().counter.get()
   } else {
