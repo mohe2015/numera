@@ -1,4 +1,4 @@
-#import "@preview/numera:0.0.1": (
+#import "@preview/numera:0.1.0": (
   display-numbering, get-numbering, heading-dependent, my-numbering,
   normal-figure, numera, outer-figure-counter-value,
   subfigure-counter-dependent,

@@ -1,4 +1,4 @@
-#import "@preview/numera:0.0.1" as numera
+#import "@preview/numera:0.1.0" as numera
 #import "@preview/tidy:0.4.3"
 
 #set document(

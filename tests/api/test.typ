@@ -1,10 +1,10 @@
-#import "@preview/numera:0.0.1": (
+#import "@preview/numera:0.1.0": (
   concat, count-counting-symbols, display-numbering, get-numbering,
   heading-dependent, my-numbering, non-ref, normal-figure, numera,
   outer-figure-counter-value, patch-numbering, ref-dependent, ref-only,
   subfigure-counter-dependent, subfigure-dependent, trim-numbering,
 )
-#import "@preview/numera:0.0.1" as api
+#import "@preview/numera:0.1.0" as api
 
 // The entrypoint exposes the supported API without leaking implementation state
 // or regex details.
@@ -56,7 +56,14 @@
 
 // A subfigure-only numbering without a normal-figure fallback must reject use
 // outside a subfigure.
+#figure(``` test```)
 #context {
-  assert-panic(() => subfigure-dependent("(a)")(1))
-  assert-panic(() => subfigure-counter-dependent("(1a)")(1))
+  assert.eq(
+    catch(() => subfigure-dependent("(a)")(1)),
+    "assertion failed: `subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`",
+  )
+  assert.eq(
+    catch(() => subfigure-counter-dependent("(1a)")(1)),
+    "assertion failed: `subfigure-counter-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-counter-dependent`",
+  )
 }

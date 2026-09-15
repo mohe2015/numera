@@ -8,7 +8,7 @@ Numera is a Typst package for heading-dependent equation and figure numbering, s
 - `impl.typ` contains the implementation and internal bindings. Add an export to `lib.typ` only when it is intentionally public and covered by the API test.
 - `docs.typ` generates the complete API reference from `impl.typ` doc-comments with Tidy. Its compile-only test requires documentation for every parameter and runs embedded doc-tests through the same released-package import and package-path override as the other tests.
 - `typst.toml` is the package manifest. Keep its version aligned with the local package path when preparing a release.
-- `packages/preview/numera/0.0.1` is a symlink back to the repository root. With a package-path override, it makes the tests' released-package imports resolve to the working tree.
+- `packages/preview/numera/0.1.0` is a symlink back to the repository root. With a package-path override, it makes the tests' released-package imports resolve to the working tree.
 - `tests/` contains Tytanic visual regression tests; its nested `AGENTS.md` has mandatory test instructions.
 - `.github/workflows/typst-ci.yml` defines the authoritative CI checks.
 - `.typstignore` excludes test references, investigative tests, and the local package link from package contents.
@@ -33,7 +33,7 @@ Before using or changing the Tytanic test workflow, read the current Tytanic doc
 
 ## Package-resolution test matrix
 
-Tests intentionally use `#import "@preview/numera:0.0.1"`, where `0.0.1` is the latest released version. Keep the package-form import: it is the form users copy, exercises the public package boundary, and lets the same fixture select development or released code through package resolution. A relative or project-root import always selects checkout code, while `@local` tests a different namespace; either change would discard the release-comparison benefit.
+Tests intentionally use `#import "@preview/numera:0.1.0"`, where `0.1.0` is the latest released version. Keep the package-form import: it is the form users copy, exercises the public package boundary, and lets the same fixture select development or released code through package resolution. A relative or project-root import always selects checkout code, while `@local` tests a different namespace; either change would discard the release-comparison benefit.
 
 Use one-shot selection so an exported variable cannot silently affect later checks:
 
@@ -63,7 +63,7 @@ For manifest or packaging changes, also run `typst-package-check check` when the
 ## Change discipline
 
 - Keep edits scoped; do not modify generated reference PNGs unless the rendered change is intended and reviewed.
-- Keep test imports on the latest released package form (`@preview/numera:0.0.1`) so tests can exercise both published and development package resolution.
+- Keep test imports on the latest released package form (`@preview/numera:0.1.0`) so tests can exercise both published and development package resolution.
 - When releasing a new version, update the manifest version, every Numera test import, and the versioned local-package symlink together.
 - Update `README.md` examples or API prose when public usage changes.
-- Never replace the `packages/preview/numera/0.0.1` symlink with copied package contents.
+- Never replace the `packages/preview/numera/0.1.0` symlink with copied package contents.

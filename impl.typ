@@ -112,7 +112,7 @@
   if the-numbering == none or max-level == 0 {
     return none
   }
-  counter(target).display((..nums, ref: ref) => my-numbering(
+  counter(target).display((..nums) => my-numbering(
     the-numbering,
     ..nums.pos().slice(0, calc.min(max-level, nums.pos().len())),
     ref: ref,
@@ -134,7 +134,7 @@
 /// -> none | array
 #let outer-figure-counter-value() = (
   if (
-    query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0
+    query(selector(figure).before(here())).last().kind == "subfigure"
   ) {
     query(selector(normal-figure).before(here())).last().counter.get()
   } else {
@@ -247,7 +247,7 @@
       // figure
       assert(
         figure-numbering != none,
-        message: "`subfigure-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-dependent`",
+        message: "`subfigure-counter-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-counter-dependent`",
       )
       my-numbering(
         if figure-numbering == auto { subfigure-numbering } else {
@@ -343,7 +343,7 @@
     message: "cannot reference an element from its own location",
   )
   let rendered = counter.display(render, at: location)
-  let result = if it.element.supplement == [] {
+  let result = if it.element.supplement in ([], none) {
     rendered
   } else {
     [#it.element.supplement~#rendered]
