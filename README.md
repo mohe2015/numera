@@ -1,12 +1,12 @@
 # numera
 
-Per-chapter figure and equation numbering, subfigure numbering, numbering functions that can render differently for references, equate package compatibility.
+Numera adds flexible figure and equation numbering to Typst. It supports numbering by chapter or heading, subfigures, different styles on numbered elements and in references, and compatibility with the Equate package.
 
 Requires Typst 0.15.0 or newer.
 
 ## Quick start
 
-Import `numera`, apply it as a show rule, and use `heading-dependent` for the elements whose counters should include the current heading:
+Import `numera`, apply its show rule, and use `heading-dependent` wherever a counter should include the current heading:
 
 ```typst
 #import "@preview/numera:0.0.1": heading-dependent, normal-figure, numera
@@ -27,19 +27,19 @@ $ E = m c^2 $ <energy>
 See @energy and @result.
 ```
 
-With `level: 1`, the equation and figure counters reset independently at each level-one heading and use heading-prefixed numbers such as `1.1` and `1.2`. Use `level: 0` for document-wide counters without a heading prefix.
+Here, `level: 1` resets the equation and figure counters at every level-one heading, producing numbers such as `1.1` and `1.2`. Set `level: 0` if you prefer document-wide counters without a heading prefix.
 
 ## API overview
 
-Numera numbering functions accept a named `ref` argument internally. It is `false` while rendering the numbered element and `true` while rendering a reference, which makes inline and reference forms independently composable.
+Numera can format a number differently on the numbered element and in a reference. Its numbering functions receive a named `ref` argument: `false` for the element itself and `true` for a reference.
 
-The complete API reference is generated directly from the source doc-comments with [Tidy](https://typst.app/universe/package/tidy/). Compile [`docs.typ`](docs.typ) to read it locally:
+For all available functions and parameters, build the API reference in [`docs.typ`](docs.typ). It is generated from the source comments with [Tidy](https://typst.app/universe/package/tidy/):
 
 ```bash
 typst compile --package-path "$PWD/packages" docs.typ
 ```
 
-Generating the reference requires every parameter to be documented and runs the embedded doc-tests. The test suite compiles it too, so documentation errors fail CI. Because `docs.typ` imports `@preview/numera:0.0.1`, its doc-tests also participate in the released-versus-development package-resolution matrix described below.
+Building the reference also runs its documentation tests and checks that every parameter is documented. CI builds it as part of the test suite. Like the examples, `docs.typ` uses the normal `@preview/numera:0.0.1` import, so you can build it against either the published release or your local checkout.
 
 | Function | Purpose |
 | --- | --- |
@@ -68,7 +68,7 @@ For example, this renders equation numbers with parentheses on the equation but 
 
 ## Examples
 
-See these examples for usage:
+The examples below cover the most common setups:
 
 - [Equate](https://github.com/mohe2015/numera/blob/main/tests/example-equate/test.typ)
 - [Equate with sub-numbering](https://github.com/mohe2015/numera/blob/main/tests/example-equate-sub-numbering/test.typ)
@@ -88,35 +88,37 @@ cargo install --git https://github.com/typst/package-check.git
 cargo install --git https://github.com/sjfhsjfh/typship.git
 ```
 
-### Package imports and test modes
+### Testing releases and local changes
 
-The examples and tests deliberately import the latest released package with the same package specification users write:
+Every example and test imports Numera the same way a user does:
 
 ```typst
 #import "@preview/numera:0.0.1"
 ```
 
-This is more useful than importing `lib.typ` by a relative or project-root path. The fixture remains a copyable user example and, without changing its source, package resolution can select either the published release or the current working tree. An `@local` import would similarly test a different namespace from the one users install.
+This is intentional. The examples remain copyable, while package resolution lets the same files exercise either the published release or the current checkout. A relative import would always select the checkout, while an `@local` import would test a different namespace from the one users install.
 
-The `packages/preview/numera/0.0.1` symlink exposes the current checkout under that package specification. Select it with a one-command override when testing development code:
-
-```bash
-TYPST_PACKAGE_PATH="$PWD/packages" tt run
-```
-
-Tytanic's explicit package-path option is an equivalent and slightly cleaner one-shot form because it cannot leak into later shell commands:
+For everyday development, point Tytanic at the local package directory:
 
 ```bash
 tt --package-path "$PWD/packages" run
 ```
 
-Explicitly remove any inherited override to run the current test suite against the published `0.0.1` release. This verifies whether the release still passes today's tests:
+The equivalent environment-variable form is handy when several commands should use the checkout:
+
+```bash
+TYPST_PACKAGE_PATH="$PWD/packages" tt run
+```
+
+To run the current test suite against the published `0.0.1` release, make sure no local override is active:
 
 ```bash
 env -u TYPST_PACKAGE_PATH tt run
 ```
 
-For a reproducible release check, create a worktree at the exact release tag or commit. Running that worktree's tests without an override verifies the published release against its own test suite. Pointing the override at the current checkout instead runs the release-era tests against current development code:
+This tells you whether the released package still passes today's tests. A failure does not always mean the release is broken: the current suite may cover an API or behavior that has not been released yet.
+
+You can make the opposite comparison with a worktree at the release tag or commit. First run the old test suite against the published package to verify the release itself, then point those same tests at your current checkout to check backward compatibility:
 
 ```bash
 development_packages="/absolute/path/to/current/numera/packages"
@@ -129,7 +131,14 @@ release_worktree="/absolute/path/to/release/worktree"
 )
 ```
 
-Together these modes distinguish a regression in development code, a released-package failure, and a newer test that intentionally requires unreleased behavior. Relative imports cannot provide that comparison without rewriting the fixtures. Keep release commits tagged so the reverse compatibility check is easy to reproduce.
+Together, these commands answer four useful questions:
+
+- Does the current checkout pass the current tests?
+- Does the published release still pass the current tests?
+- Does a release pass the tests that shipped with it?
+- Does the current checkout still pass an older release's tests?
+
+Keeping release commits tagged makes the last two checks easy to reproduce.
 
 ### Checks and publishing
 
@@ -147,6 +156,6 @@ Publishing is a separate, intentional release step:
 ```bash
 typst-package-check check
 
-typship login universe # Currently Personal access tokens (classic) required
+typship login universe # A classic personal access token is currently required
 typship publish universe
 ```
