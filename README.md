@@ -33,6 +33,14 @@ With `level: 1`, the equation and figure counters reset independently at each le
 
 Numera numbering functions accept a named `ref` argument internally. It is `false` while rendering the numbered element and `true` while rendering a reference, which makes inline and reference forms independently composable.
 
+The complete API reference is generated directly from the source doc-comments with [Tidy](https://typst.app/universe/package/tidy/). Compile [`docs.typ`](docs.typ) to read it locally:
+
+```bash
+typst compile --package-path "$PWD/packages" docs.typ
+```
+
+Generating the reference requires every parameter to be documented and runs the embedded doc-tests. The test suite compiles it too, so documentation errors fail CI. Because `docs.typ` imports `@preview/numera:0.0.1`, its doc-tests also participate in the released-versus-development package-resolution matrix described below.
+
 | Function | Purpose |
 | --- | --- |
 | `numera(level: 0)` | Installs the counter resets, subfigure handling, and reference rendering. Apply it with `#show: numera(level: ...)`. |
@@ -41,8 +49,8 @@ Numera numbering functions accept a named `ref` argument internally. It is `fals
 | `subfigure-dependent(subfigure-numbering, figure-numbering: none)` | Selects numbering for subfigures and, optionally, normal figures. It does not add the parent figure number. |
 | `subfigure-counter-dependent(subfigure-numbering, figure-numbering: none)` | Selects figure or subfigure numbering and prepends the parent figure counter to subfigures. Pass `figure-numbering: auto` to reuse the subfigure pattern for normal figures. |
 | `concat(..numberings)` | Concatenates multiple Numera numbering functions into one numbering. |
-| `non-ref(text)` | Emits `text` on the numbered element and nothing in references. Useful for inline-only punctuation. |
-| `ref-only(text)` | Emits `text` only in references. |
+| `non-ref(string)` | Emits `string` on the numbered element and nothing in references. Useful for inline-only punctuation. |
+| `ref-only(string)` | Emits `string` only in references. |
 
 For example, this renders equation numbers with parentheses on the equation but without them in references:
 
@@ -131,6 +139,7 @@ Format and verify development code before submitting a change:
 typstyle --inplace .
 typstyle --check .
 tt --package-path "$PWD/packages" run
+typst compile --package-path "$PWD/packages" docs.typ
 ```
 
 Publishing is a separate, intentional release step:

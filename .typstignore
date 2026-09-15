@@ -2,4 +2,5 @@ ref
 tests/reasoning-*
 tests/issue-*
 packages
+docs.pdf
 .typstignore

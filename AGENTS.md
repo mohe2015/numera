@@ -6,6 +6,7 @@ Numera is a Typst package for heading-dependent equation and figure numbering, s
 
 - `lib.typ` is the package entry point and explicitly re-exports the supported API from `impl.typ`.
 - `impl.typ` contains the implementation and internal bindings. Add an export to `lib.typ` only when it is intentionally public and covered by the API test.
+- `docs.typ` generates the complete API reference from `impl.typ` doc-comments with Tidy. Its compile-only test requires documentation for every parameter and runs embedded doc-tests through the same released-package import and package-path override as the other tests.
 - `typst.toml` is the package manifest. Keep its version aligned with the local package path when preparing a release.
 - `packages/preview/numera/0.0.1` is a symlink back to the repository root. With a package-path override, it makes the tests' released-package imports resolve to the working tree.
 - `tests/` contains Tytanic visual regression tests; its nested `AGENTS.md` has mandatory test instructions.
@@ -17,6 +18,7 @@ Numera is a Typst package for heading-dependent equation and figure numbering, s
 - Preserve the package's small, composable API. Prefer focused helpers and Typst-native counters, selectors, context, set rules, and show rules over duplicated rendering logic.
 - Treat every binding re-exported by `lib.typ` as public. Preserve signatures and output behavior unless the requested change intentionally modifies the API.
 - Keep `///` documentation accurate for public helpers, especially the `ref` convention used by numbering functions.
+- Follow the current Tidy documentation syntax when editing `///` comments. Read <https://typst.app/universe/package/tidy/> instead of guessing parser, type-annotation, example, or doc-test behavior.
 - Be careful with location-sensitive logic. `here()`, `query`, `counter.display(..., at: ...)`, show-rule ordering, element numbering, and reference rendering are central to this package and can change behavior subtly.
 - Preserve compatibility for normal figures (`image`, `table`, and `raw`), `kind: "subfigure"`, built-in equations, and `equate` equations unless a change is explicitly narrower.
 - Run `typstyle --inplace .` after editing Typst files; do not hand-fight formatter output.
@@ -51,6 +53,7 @@ From the repository root, use the local package tree for development tests:
 ```bash
 typstyle --check .
 tt --package-path "$PWD/packages" run
+typst compile --package-path "$PWD/packages" docs.typ
 ```
 
 Tests are essential, not optional. Every behavior change or bug fix must add or update a focused regression test and its reviewed reference images. Run the most relevant test while iterating, then run the complete suite before finishing. Do not report success if the full suite was skipped; state exactly what was and was not run.

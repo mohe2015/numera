@@ -1,4 +1,7 @@
-/// A numbering function is anything `(ref: false, ..nums) => string` where `ref` is false when the numbering is called from the element itself and true if it is called from a ref.
+/// Numera provides composable numbering functions for figures and equations.
+///
+/// A Numera numbering function accepts `(ref: false, ..nums)`: `ref` is
+/// `false` while rendering an element and `true` while rendering a reference.
 
 #let equate-sub-numbering-state = state("equate/sub-numbering", false)
 
@@ -6,16 +9,42 @@
 #let non-counting = "[^" + counting-symbols + "]"
 #let pattern = regex("^" + non-counting + "*(.*?)" + non-counting + "*$")
 
-/// Removes non-counting symbols from the beginning and end of a numbering pattern.
-#let trim-numbering(s) = s.match(pattern).captures.at(0)
+/// Removes non-counting symbols from the beginning and end of a numbering
+/// pattern.
+///
+/// #test(`numera.trim-numbering("(1.a)") == "1.a"`)
+///
+/// -> str
+#let trim-numbering(
+  /// The numbering pattern to trim.
+  /// -> str
+  s,
+) = s.match(pattern).captures.at(0)
 
 #let counting-pattern = regex("[" + counting-symbols + "]")
 
-/// Returns the number of counting symbols in the provided numbering pattern
-#let count-counting-symbols(s) = s.matches(counting-pattern).len()
+/// Returns the number of counting symbols in a numbering pattern.
+///
+/// #test(`numera.count-counting-symbols("1.a") == 2`)
+///
+/// -> int
+#let count-counting-symbols(
+  /// The numbering pattern to inspect.
+  /// -> str
+  s,
+) = s.matches(counting-pattern).len()
 
 /// Produces a numbering pattern/function that trims numbering patterns if `(ref: true)` is passed.
-#let patch-numbering(the-numbering, ref: false) = {
+///
+/// -> none | str | function
+#let patch-numbering(
+  /// The numbering pattern or function to adapt, or `none`.
+  /// -> none | str | function
+  the-numbering,
+  /// Whether the result will render a reference.
+  /// -> bool
+  ref: false,
+) = {
   if the-numbering == none {
     none
   } else if type(the-numbering) == str {
@@ -30,12 +59,33 @@
 }
 
 /// Produces a numbering that trims numbering patterns if `(ref: true)` is passed.
-#let my-numbering(the-numbering, ref: false, ..nums) = {
+///
+/// -> content
+#let my-numbering(
+  /// The numbering pattern or function to render.
+  /// -> str | function
+  the-numbering,
+  /// Whether the result will render a reference.
+  /// -> bool
+  ref: false,
+  /// The counter components passed to the numbering.
+  /// -> int
+  ..nums,
+) = {
   numbering(patch-numbering(the-numbering, ref: ref), ..nums)
 }
 
-/// Gets numbering pattern/function for `target` element type at `here()`
-#let get-numbering(target, ref: false) = {
+/// Gets the active numbering pattern or function for an element at `here()`.
+///
+/// -> none | str | function
+#let get-numbering(
+  /// The element function or selector whose numbering should be read.
+  /// -> function | selector
+  target,
+  /// Whether the result will render a reference.
+  /// -> bool
+  ref: false,
+) = {
   patch-numbering(
     query(selector(target).before(here()))
       .last(default: (numbering: none))
@@ -45,7 +95,19 @@
 }
 
 /// Displays numbering for `target` with truncated counter to `max-level`.
-#let display-numbering(target, max-level, ref: false) = {
+///
+/// -> none | content
+#let display-numbering(
+  /// The element function or selector whose counter should be displayed.
+  /// -> function | selector
+  target,
+  /// The maximum number of counter components to display.
+  /// -> int
+  max-level,
+  /// Whether the result will render a reference.
+  /// -> bool
+  ref: false,
+) = {
   let the-numbering = get-numbering(target, ref: ref)
   if the-numbering == none or max-level == 0 {
     return none
@@ -57,7 +119,9 @@
   ))
 }
 
-/// A figure of kind `image`, `table` or `raw` (not a `figure.where(kind: "subfigure")`)
+/// Selects figures of kind `image`, `table`, or `raw`, excluding subfigures.
+///
+/// -> selector
 #let normal-figure = (
   figure
     .where(kind: image)
@@ -66,6 +130,8 @@
 )
 
 /// Returns the counter of the `normal-figure` containing this `figure.where(kind: "subfigure")` or `none` when applied to the location of a `normal-figure`.
+///
+/// -> none | array
 #let outer-figure-counter-value() = (
   if (
     query(selector(figure.where(kind: "subfigure")).within(here())).len() == 0
@@ -77,7 +143,19 @@
 )
 
 /// Returns numbering function that concatenates displayed `heading` numbering with truncated counter to `max-level` with `separator` and the passed `numbering`.
-#let heading-dependent(max-level, the-numbering, separator: ".") = {
+///
+/// -> function
+#let heading-dependent(
+  /// The maximum number of heading counter components to include.
+  /// -> int
+  max-level,
+  /// The numbering pattern or function for the element's own counter.
+  /// -> str | function
+  the-numbering,
+  /// Text inserted between the heading and element numberings.
+  /// -> str
+  separator: ".",
+) = {
   (ref: false, ..nums) => {
     let the-heading = display-numbering(heading, max-level, ref: ref)
     if the-heading != none {
@@ -90,7 +168,16 @@
 }
 
 /// Returns a numbering function that uses the first numbering for non-`ref` numberings and the second numbering for `ref` numberings.
-#let ref-dependent(inline-numbering, ref-numbering) = {
+///
+/// -> function
+#let ref-dependent(
+  /// The numbering pattern or function used on the numbered element.
+  /// -> str | function
+  inline-numbering,
+  /// The numbering pattern or function used in references.
+  /// -> str | function
+  ref-numbering,
+) = {
   (
     ref: false,
     ..nums,
@@ -104,7 +191,17 @@
 }
 
 /// Returns a numbering function that uses the first numbering for `figure.where(kind: "subfigure")` and, if provided, the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. Does NOT add the parent figure number for subfigures!
-#let subfigure-dependent(subfigure-numbering, figure-numbering: none) = {
+///
+/// -> function
+#let subfigure-dependent(
+  /// The numbering pattern or function used for subfigures.
+  /// -> str | function
+  subfigure-numbering,
+  /// The normal-figure numbering, `auto` to reuse `subfigure-numbering`, or
+  /// `none` when the returned function is used only for subfigures.
+  /// -> auto | none | str | function
+  figure-numbering: none,
+) = {
   (
     ref: false,
     ..nums,
@@ -130,8 +227,15 @@
 }
 
 /// Returns a numbering function that uses the first numbering for `figure.where(kind: "subfigure")` and, if provided, the second numbering for `normal-figure`. Use `figure-numbering: auto` to use the same numbering for `normal-figure`. ADDS the parent figure number for subfigures!
+///
+/// -> function
 #let subfigure-counter-dependent(
+  /// The numbering pattern or function used for subfigures.
+  /// -> str | function
   subfigure-numbering,
+  /// The normal-figure numbering, `auto` to reuse `subfigure-numbering`, or
+  /// `none` when the returned function is used only for subfigures.
+  /// -> auto | none | str | function
   figure-numbering: none,
 ) = {
   (
@@ -164,8 +268,15 @@
   }
 }
 
-/// Returns a numbering function that concatenates the passed numbering patterns/functions
-#let concat(..numberings) = {
+/// Returns a numbering function that concatenates other Numera numbering
+/// functions.
+///
+/// -> function
+#let concat(
+  /// The numbering functions to concatenate.
+  /// -> function
+  ..numberings,
+) = {
   (
     ref: false,
     ..nums,
@@ -175,7 +286,18 @@
 }
 
 /// Returns a numbering function that produces the provided string for non-`ref` uses and an empty string otherwise.
-#let non-ref(string) = {
+///
+/// #test(
+///   `numera.non-ref("(")(ref: false) == "("`,
+///   `numera.non-ref("(")(ref: true) == ""`,
+/// )
+///
+/// -> function
+#let non-ref(
+  /// The text to emit on the numbered element.
+  /// -> str
+  string,
+) = {
   (
     ref: false,
     ..nums,
@@ -189,7 +311,18 @@
 }
 
 /// Returns a numbering function that produces the provided string for `ref` uses and an empty string otherwise.
-#let ref-only(string) = {
+///
+/// #test(
+///   `numera.ref-only("(")(ref: false) == ""`,
+///   `numera.ref-only("(")(ref: true) == "("`,
+/// )
+///
+/// -> function
+#let ref-only(
+  /// The text to emit in references.
+  /// -> str
+  string,
+) = {
   (
     ref: false,
     ..nums,
@@ -219,7 +352,13 @@
 }
 
 /// Resets the equation and figure counters at the specified heading level. Level 0 means not resetting at all. Also handles subfigures and ref.
-#let numera(level: 0) = it => {
+///
+/// -> function
+#let numera(
+  /// The heading level at which counters reset, or `0` for no resets.
+  /// -> int
+  level: 0,
+) = it => {
   show heading: it => {
     if it.level <= level {
       counter(math.equation).update(0)
