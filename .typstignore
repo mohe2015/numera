@@ -4,3 +4,4 @@ tests/issue-*
 packages
 docs.pdf
 .typstignore
+AGENTS.md
