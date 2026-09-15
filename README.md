@@ -2,7 +2,13 @@
 
 Per-chapter figure and equation numbering, subfigure numbering, numbering functions that can render differently for references, equate package compatibility.
 
-See [example](tests/example/test.typ) and [equate example](tests/compatibility-equate/test.typ) for usage.
+See these examples for usage:
+
+- [Equate](https://github.com/mohe2015/numera/blob/main/tests/example-equate/test.typ)
+- [Equate with sub-numbering](https://github.com/mohe2015/numera/blob/main/tests/example-equate-sub-numbering/test.typ)
+- [Per-heading numbering](https://github.com/mohe2015/numera/blob/main/tests/example-per-heading-level-1-numbering/test.typ)
+- [Per-heading subfigures](https://github.com/mohe2015/numera/blob/main/tests/example-per-heading-subfigures/test.typ)
+- [Involved Equate compatibility](https://github.com/mohe2015/numera/blob/main/tests/involved-example-compatibility-equate/test.typ)
 
 ## Development
 
