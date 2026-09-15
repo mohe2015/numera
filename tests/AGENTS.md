@@ -1,6 +1,6 @@
 # Test guidance
 
-These are persistent Tytanic visual regression tests. Each `tests/<name>/test.typ` source is compiled and compared page-by-page with PNGs in `tests/<name>/ref/`.
+Most tests are persistent Tytanic visual regressions: each `tests/<name>/test.typ` source with a `ref/` directory is compiled and compared page-by-page with its PNGs. Tests without `ref/`, such as `api`, are compile-only semantic tests.
 
 ## Tests are mandatory
 

@@ -4,7 +4,8 @@
 
 Numera is a Typst package for heading-dependent equation and figure numbering, subfigure numbering, reference-specific rendering, and compatibility with the `equate` package.
 
-- `lib.typ` is the package entry point and contains the public implementation.
+- `lib.typ` is the package entry point and explicitly re-exports the supported API from `impl.typ`.
+- `impl.typ` contains the implementation and internal bindings. Add an export to `lib.typ` only when it is intentionally public and covered by the API test.
 - `typst.toml` is the package manifest. Keep its version aligned with the local package path when preparing a release.
 - `packages/preview/numera/0.0.1` is a symlink back to the repository root. With a package-path override, it makes the tests' released-package imports resolve to the working tree.
 - `tests/` contains Tytanic visual regression tests; its nested `AGENTS.md` has mandatory test instructions.
@@ -14,7 +15,7 @@ Numera is a Typst package for heading-dependent equation and figure numbering, s
 ## Working principles
 
 - Preserve the package's small, composable API. Prefer focused helpers and Typst-native counters, selectors, context, set rules, and show rules over duplicated rendering logic.
-- Treat every top-level `#let` in `lib.typ` as public unless there is clear evidence otherwise. Preserve signatures and output behavior unless the requested change intentionally modifies the API.
+- Treat every binding re-exported by `lib.typ` as public. Preserve signatures and output behavior unless the requested change intentionally modifies the API.
 - Keep `///` documentation accurate for public helpers, especially the `ref` convention used by numbering functions.
 - Be careful with location-sensitive logic. `here()`, `query`, `counter.display(..., at: ...)`, show-rule ordering, element numbering, and reference rendering are central to this package and can change behavior subtly.
 - Preserve compatibility for normal figures (`image`, `table`, and `raw`), `kind: "subfigure"`, built-in equations, and `equate` equations unless a change is explicitly narrower.

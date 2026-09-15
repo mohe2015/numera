@@ -15,9 +15,9 @@ See these examples for usage:
 Install the development tools:
 
 ```bash
-cargo install --locked typst-cli
-cargo install --locked tytanic
-cargo install --locked typstyle
+cargo install --locked --version 0.15.1 typst-cli
+cargo install --locked --version 0.4.1 tytanic
+cargo install --locked --version 0.15.1 typstyle
 cargo install --git https://github.com/typst/package-check.git
 cargo install --git https://github.com/sjfhsjfh/typship.git
 ```
