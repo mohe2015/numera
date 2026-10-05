@@ -142,7 +142,13 @@
   }
 )
 
-/// Returns numbering function that concatenates displayed `heading` numbering with truncated counter to `max-level` with `separator` and the passed `numbering`.
+/// Returns a numbering function that joins the heading counter, truncated to
+/// `max-level`, and the element numbering with `separator`.
+/// Use `heading-format: "reference"` to omit heading punctuation from both
+/// captions and references (the default). `"display"` preserves existing behavior:
+/// heading punctuation appears on elements and is trimmed in references.
+/// Put the joining punctuation in `separator`, not in the element pattern;
+/// for example, use `"1"` rather than `".1"`.
 ///
 /// -> function
 #let heading-dependent(
@@ -155,9 +161,22 @@
   /// Text inserted between the heading and element numberings.
   /// -> str
   separator: ".",
+  /// The heading format: `"display"` follows the element/reference context;
+  /// `"reference"` always uses the heading's reference numbering. For function
+  /// numberings, this passes `ref: true`; string patterns lose outer punctuation.
+  /// -> str
+  heading-format: "reference",
 ) = {
+  assert(
+    heading-format in ("display", "reference"),
+    message: "`heading-format` must be \"display\" or \"reference\"",
+  )
   (ref: false, ..nums) => {
-    let the-heading = display-numbering(heading, max-level, ref: ref)
+    let the-heading = display-numbering(
+      heading,
+      max-level,
+      ref: ref or heading-format == "reference",
+    )
     if the-heading != none {
       the-heading += separator
     }
