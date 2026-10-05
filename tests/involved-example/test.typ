@@ -4,6 +4,8 @@
   subfigure-counter-dependent,
 )
 
+// The default heading prefix uses reference formatting, so appendix brackets
+// remain on headings but are omitted from figure and equation prefixes.
 #let level = 1
 #show: numera(level: level)
 

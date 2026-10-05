@@ -67,3 +67,9 @@
     "assertion failed: `subfigure-counter-dependent` used for `normal-figure` numbering, either filter with `.where(kind: \"subfigure\")` or provide `figure-numbering` argument to `subfigure-counter-dependent`",
   )
 }
+
+// Reject unsupported heading formats when constructing the numbering.
+#assert.eq(
+  catch(() => heading-dependent(1, "1", heading-format: "unknown")),
+  "assertion failed: `heading-format` must be \"display\" or \"reference\"",
+)
