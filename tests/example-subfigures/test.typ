@@ -5,6 +5,9 @@
 
 #show: numera()
 
+// Custom figure kinds require an explicit supplement.
+#show figure.where(kind: "subfigure"): set figure(supplement: [Figure])
+
 // Figure numbering: 1 inline, 1.1 in refs
 // Subfigure numbering: (a) inline, full reference (e.g. 1.1a) in refs
 #show figure: set figure(numbering: ref-dependent(

@@ -370,7 +370,14 @@
   link(location, result)
 }
 
-/// Resets the equation and figure counters at the specified heading level. Level 0 means not resetting at all. Also handles subfigures and ref.
+/// Resets the equation and figure counters at the specified heading level.
+/// Level 0 means not resetting at all. Resets the subfigure counter for each
+/// normal figure and renders references with `ref: true`.
+/// Subfigures keep their configured supplement; they do not automatically
+/// inherit the parent figure's supplement. Set an explicit supplement for
+/// `kind: "subfigure"` with
+/// `show figure.where(kind: "subfigure"): set figure(supplement: [Figure])`.
+/// Use `none` to omit it.
 ///
 /// -> function
 #let numera(
@@ -390,10 +397,6 @@
 
   show normal-figure: outer => {
     counter(figure.where(kind: "subfigure")).update(0)
-
-    show figure.where(kind: "subfigure"): set figure(
-      supplement: outer.supplement,
-    )
 
     outer
   }

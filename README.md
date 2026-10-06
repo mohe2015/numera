@@ -90,6 +90,35 @@ Use `heading-format: "display"` to preserve heading punctuation on numbered
 elements while trimming it in references. For custom heading numbering
 functions, `"reference"` passes `ref: true`.
 
+### Subfigure supplements
+
+Numera resets the subfigure counter for each normal figure. Subfigures keep
+their configured supplement; they do not automatically inherit the parent
+figure's supplement. Since `"subfigure"` is a custom Typst figure kind, specify
+its supplement explicitly:
+
+```typst
+#import "@preview/numera:0.1.0": numera, subfigure-counter-dependent
+
+#show: numera()
+#show figure.where(kind: "subfigure"): set figure(
+  supplement: [Figure],
+  numbering: subfigure-counter-dependent("1a"),
+)
+
+#figure(
+  [#figure([A panel], caption: [First panel], kind: "subfigure") <panel>],
+  caption: [A grouped figure],
+) <group>
+
+See @panel and @group.
+```
+
+The filtered show-set rule gives subfigures the supplement `Figure`.
+Change it to `[Panel]` to use a different subfigure supplement.
+Use `supplement: none` for captions and references without a supplement.
+A supplement passed directly to a figure takes precedence over these rules.
+
 ## Examples
 
 The examples below cover the most common setups:
