@@ -6,6 +6,9 @@
 
 #let level = 1
 #show: numera(level: level)
+
+// Custom figure kinds require an explicit supplement.
+#show figure.where(kind: "subfigure"): set figure(supplement: [Figure])
 #set heading(numbering: "1.1.1")
 
 // Figure numbering: 1 inline, 1.1 in refs

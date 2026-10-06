@@ -11,6 +11,9 @@
 #show: equate.with(sub-numbering: true, number-mode: "line")
 #show: numera(level: level)
 
+// Custom figure kinds require an explicit supplement.
+#show figure.where(kind: "subfigure"): set figure(supplement: [Figure])
+
 #set math.equation(numbering: heading-dependent(level, "(1.1)"))
 #show normal-figure: set figure(numbering: heading-dependent(level, "(1)"))
 
@@ -69,6 +72,7 @@ See @fig1-1, @s1-1-a, @s1-1-b, @fig1-2, @fig2-1, @fig2-2, @fig3-1, @fig3-2, @fig
 
 #set math.equation(supplement: "Eq")
 #set figure(supplement: "Fig")
+#show figure.where(kind: "subfigure"): set figure(supplement: [Fig])
 
 = Test 1
 
