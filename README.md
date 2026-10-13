@@ -123,11 +123,11 @@ A supplement passed directly to a figure takes precedence over these rules.
 
 The examples below cover the most common setups:
 
-- [Equate](https://github.com/mohe2015/numera/blob/main/tests/example-equate/test.typ)
-- [Equate with sub-numbering](https://github.com/mohe2015/numera/blob/main/tests/example-equate-sub-numbering/test.typ)
-- [Per-heading numbering](https://github.com/mohe2015/numera/blob/main/tests/example-per-heading-level-1-numbering/test.typ)
-- [Per-heading subfigures](https://github.com/mohe2015/numera/blob/main/tests/example-per-heading-subfigures/test.typ)
-- [Involved Equate compatibility](https://github.com/mohe2015/numera/blob/main/tests/involved-example-compatibility-equate/test.typ)
+- [Equate](./tests/example-equate/test.typ)
+- [Equate with sub-numbering](./tests/example-equate-sub-numbering/test.typ)
+- [Per-heading numbering](./tests/example-per-heading-level-1-numbering/test.typ)
+- [Per-heading subfigures](./tests/example-per-heading-subfigures/test.typ)
+- [Involved Equate compatibility](./tests/involved-example-compatibility-equate/test.typ)
 
 ## Contributing
 
