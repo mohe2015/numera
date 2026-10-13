@@ -80,6 +80,6 @@ Publishing is a separate, intentional release step:
 ```bash
 typst-package-check check
 
-typship login universe # A classic personal access token is currently required
-typship publish universe
+typship login universe
+typship publish universe --upload-method api
 ```
