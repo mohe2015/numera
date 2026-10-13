@@ -1,6 +1,8 @@
 ref
 tests/reasoning-*
 tests/issue-*
+tests/api/test.typ
+tests/docs/test.typ
 packages
 docs.pdf
 .typstignore
